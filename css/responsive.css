@@ -49,6 +49,12 @@
 	
 }
 @media (max-width: 768px) {
+	.case_list{
+		height:1.6rem;
+	}
+	.information_P p{
+		margin:0;
+	}
 	.footer .contain{
 		width:90%;
 	}
@@ -202,6 +208,16 @@
 	
 }
 @media (max-width: 480px) {
+	.case_left img{
+		height:1.6rem;
+	}
+	.information_P p{
+		height:0.5rem;
+		margin-top:0.2rem;
+	}
+	.case_lefts{
+		font-size:0.4rem;
+	}
 	.bread img{
 		margin-left:0.2rem;
 		margin-top:0.4rem;
@@ -389,5 +405,9 @@
 	.content_tlt a{
 		height:0.8rem;
 		line-height:0.8rem;
+	}
+	.case_rights img{
+		width:0.38rem;
+		height:0.26rem;
 	}
 }

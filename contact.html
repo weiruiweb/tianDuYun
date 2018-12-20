@@ -39,7 +39,7 @@
 <body style="background:#f8f8f8;">
 <div id="app">
     <div class="banner2">
-        <img :src="mainData[0]&&mainData[0].bannerImg?mainData[0].bannerImg[0].url:''" class="img-responsive banner_img">
+        <img :src="mainData&&mainData.bannerImg?mainData.bannerImg[0].url:''" class="img-responsive banner_img">
     </div>
     <div class="bread">
         <div class="contain">
@@ -52,9 +52,17 @@
             <div class="contact_cont">
                 <div class="contact_box">
                     <ul class="contact_sort">
-                        <li v-for="item in mainData">
-                            <a><img :src="item.mainImg&&item.mainImg[0]?item.mainImg[0].url:''"/></a>
-                            <p>{{item.description}}</p>
+                        <li>
+                            <a><img src="images/contact1.jpg"/></a>
+                            <p>{{mainData.title}}</p>
+                        </li>
+                        <li>
+                            <a><img src="images/contact2.jpg"/></a>
+                            <p>{{mainData.description}}</p>
+                        </li>
+                        <li >
+                            <a><img src="images/contact3.jpg"/></a>
+                            <p>{{mainData.contactPhone}}</p>
                         </li>
                     </ul>
                 </div>
@@ -272,6 +280,24 @@ var app = new Vue({
         },
 
     methods:{
+        getLabelData(){
+            const self= this;
+            const postData = {};
+            postData.searchItem = {
+              thirdapp_id:2,
+              type:1,
+            };
+            const callback = (res)=>{
+              if(res.info.data.length>0){
+                self.labelData.push.apply(self.labelData,res.info.data);
+                 self.menuData = window.base.findKeyFromArray(self.labelData,'title','导航')[0];
+                 if(self.menuData.child.length>0){
+                    self.secondData = window.base.findKeyFromArray(self.menuData.child,'title','解决方案')[0]
+                 }
+              }
+            };
+            window.base.labelGet(postData,callback); 
+        },
         getMainData(){
             const  self =this;
             const postData={};
@@ -291,8 +317,8 @@ var app = new Vue({
             };
         const callback =(res)=>{
           if(res.info.data.length>0){
-            self.mainData.push.apply(self.mainData,res.info.data);
-            self.mainData = self.mainData.reverse();
+            self.mainData=res.info.data[0];
+            console.log('mainData',self.mainData);
           }
          
         };

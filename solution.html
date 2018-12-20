@@ -40,7 +40,7 @@
 <body style="background:#f8f8f8;">
 <div id="app">
     <div class="banner2">
-       <!--  <img :src="titleData.mainImg&&titleData.mainImg[0]?titleData.mainImg[0].url:''" class="img-responsive banner_img"> -->
+        <img :src="secondData.mainImg&&secondData.mainImg[0]?secondData.mainImg[0].url:''" class="img-responsive banner_img">
     </div>
     <div class="bread">
         <div class="contain">
@@ -160,8 +160,27 @@ var app = new Vue({
     created () {
         const self = this;
         self.getMainData();
+        self.getLabelData();
     },
     methods:{
+        getLabelData(){
+            const self= this;
+            const postData = {};
+            postData.searchItem = {
+              thirdapp_id:2,
+              type:1,
+            };
+            const callback = (res)=>{
+              if(res.info.data.length>0){
+                self.labelData.push.apply(self.labelData,res.info.data);
+                 self.menuData = window.base.findKeyFromArray(self.labelData,'title','导航')[0];
+                 if(self.menuData.child.length>0){
+                    self.secondData = window.base.findKeyFromArray(self.menuData.child,'title','解决方案')[0]
+                 }
+              }
+            };
+            window.base.labelGet(postData,callback); 
+        },
        getMainData(id){
             var self = this;
             var postData = {};

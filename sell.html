@@ -54,43 +54,32 @@
             <div class="content_left" :class="(is_menu?'slideIn':'')">
                 <div class="content_left_cont">
                     <div class="content_tlt color">
-                        <a style="border-right:solid 1px #fff" href="javascript:void(0);" v-for="(item,index) in menuData.child"  :data-id="item.id" @click="tab(index)" :style="tabId == index?'color:#eb3434':''">{{item.title}}</a>
+                        <a style="border-right:solid 1px #fff" href="javascript:void(0);" v-for="(item,index) in secondData.child"  :data-id="item.id" @click="tab(index)" :style="tabId == index?'color:#eb3434':''">{{item.title}}</a>
                     </div>
-                    <ul class="list_menu" :style="tabId==0?'display:block':'display:none'">
+                    <ul class="list_menu" v-for="(item,index) in middleData" :style="tabId==index?'display:block':'display:none'">
                         <li class="list_li" style="height:0.2rem;">
                             <span></span><a></a>
+                        </li>   
+                        <li  v-for="(child_item,index) in item.article" :data-id="child_item.id" @click="changeMenu(index)"><span></span>
+                            <a ><p>{{child_item.title}}</p></a>
                         </li>
-                        <li v-for="item in changeData.child" :data-id="item.id" @click="changeMenu"><span></span>
-                            <a :data-id="item.id" @click="changeMenu">
-                                <p :data-id="item.id" @click="changeMenu">{{item.title}}</p>
-                            </a></li>
-                    </ul>
-                    <ul class="list_menu" :style="tabId==1?'display:block':'display:none'">
-                        <li class="list_li" style="height:0.2rem;">
-                            <span></span><a></a>
-                        </li>
-                        <li v-for="item in changeData1.child" :data-id="item.id" @click="changeMenu"><span></span>
-                            <a :data-id="item.id" @click="changeMenu">
-                                <p :data-id="item.id" @click="changeMenu">{{item.title}}</p>
-                            </a></li>
+                    
                     </ul>
                 </div>
             </div>
             <div class="show_menu" @click="menu">点击切换</div>
             <div class="content_right">
                 <div class="detail_cont">
-                    <div class="case">
-                        <div class="case_item" v-for="item in mainData">
+                    <div class="case" v-for="(item,index) in middleData" :style="articleId==index?'display:block':'display:none'">
+                        <div class="case_item" v-for="child_item in item.article" >
                             <div class="case_img">
-                                <img :src="item.mainImg&&item.mainImg[0]?item.mainImg[0].url:''"/>
+                                <img :src="child_item.mainImg&&child_item.mainImg[0]?child_item.mainImg[0].url:''"/>
                             </div>
                             <div class="case_detail">
-                                <p class="p1">{{item.title}}</p>
-                                <p class="p2 avoidOverflow">{{item.description}}</p>
+                                <p class="p1">{{child_item.title}}</p>
+                                <p class="p2 avoidOverflow">{{child_item.description}}</p>
                             </div>
                         </div>
-                        
-                        
                     </div>
                 </div>
             </div>
@@ -152,6 +141,7 @@ var app = new Vue({
         return {
             is_toggle:false,
             tabId:0,
+            articleId:0,
             is_menu:false,
             paginate: { 
                     count: 0, 
@@ -186,26 +176,27 @@ var app = new Vue({
               thirdapp_id:2,
               type:1,
             };
+            postData.getAfter={
+              article:{
+                tableName:'article',
+                middleKey:'id',
+                key:'menu_id',
+                condition:'in'
+              }
+            };
             const callback = (res)=>{
               if(res.info.data.length>0){
                 self.labelData.push.apply(self.labelData,res.info.data);
-                console.log(111,self.labelData)
-                    if(self.labelData.length>0){
-                    self.menuData = window.base.findKeyFromArray(self.labelData,'title','销售租赁')[0];
-                    if(self.menuData.child.length>0){
-                        self.changeData = window.base.findKeyFromArray(self.menuData.child,'title','设备销售')[0];
-                       
-                        self.changeData1 = window.base.findKeyFromArray(self.menuData.child,'title','设备租赁')[0];
-                    }
-                    for(var i =0;i<self.menuData.child.length;i++){
-                        self.middleData = self.menuData.child[i]
-                        for(var j=0;j<self.middleData.child.length;j++){
-                            self.secondData.push(self.middleData.child[j].id);
+                 self.menuData = window.base.findKeyFromArray(self.labelData,'title','导航')[0];
+                 if(self.menuData.child.length>0){
+                    self.secondData = window.base.findKeyFromArray(self.menuData.child,'title','销售&租赁')[0]
+                    if(self.secondData.child.length>0){
+                        for(var i=0;i<self.secondData.child.length;i++){
+                           self.middleData.push(self.secondData.child[i]) ;
                         }
                     }
                  }
               }
-             self.getMainData();
             };
             window.base.labelGet(postData,callback); 
         },
@@ -216,11 +207,11 @@ var app = new Vue({
                 postData.searchItem = {
                   thirdapp_id:2
                 };
-                if(id){
+                //if(id){
                     postData.searchItem.menu_id = id; 
-                }else{
-                    postData.searchItem.menu_id = self.changeData.child[0].id
-                }
+                // }else{
+                //     postData.searchItem.menu_id = self.changeData.child[0].id
+                // }
                 var callback = (res) => {
                     self.mainData = res.info.data;
                     self.paginate['count'] = res.info.total;
@@ -228,18 +219,17 @@ var app = new Vue({
                 };
                 window.base.articleList(postData, callback);
             },
-            changePage(e) {
-                var self = this;
-                var dataSet = window.base.getDataSet(e);
-                window.base.changePage(dataSet, self);
-            },
-            changeMenu(e) {
-                var self = this;
-                self.paginate = { count: 0, currentPage: 1, pagesize: 6, is_page: true, };
-                var id = window.base.getDataSet(e).id;
-                self.getMainData(id);
-                self.currentId = id;
-            },
+        changePage(e) {
+            var self = this;
+            var dataSet = window.base.getDataSet(e);
+            window.base.changePage(dataSet, self);
+        },
+        changeMenu(id) {
+            var self = this;
+            var articleId = id;
+            self.articleId = articleId;
+            console.log('articleId',self.articleId)
+        },
         tab(index) {
             var self =this;
             self.tabId = index;  

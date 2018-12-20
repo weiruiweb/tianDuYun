@@ -48,11 +48,15 @@
              </div>
              <div class="navigation_right" id="computer">
                  <ul class="navigate">
-                   <li  v-for="(item,index) in mainData"   @mouseover="menuShow(item.id)">
+                   <li  v-for="(item,index) in menuData"   @mouseover="menuShow(item.id)">
                         <a href="javascript:void(0);" @click="intoPath(item.url)">{{item.title}}</a>
-                        <div class="second_menu" v-if="articleData.length>0" :class="(menu_id==item.id?'after1':'orgin1')" >
-                            <div class="contain">
-                                <a  v-for="(child_item,index) in articleData"  
+                        <div class="second_menu"  :class="(menu_id==item.id?'after1':'orgin1')" >
+                            <div class="contain" v-if="item.child">
+                                <a  v-for="(child_item,index) in item.child"  
+                                 :data-id="index" :data-url="child_item.url" @click="secondPath">{{child_item.title}}</a>
+                            </div>
+                            <div class="contain" v-else>
+                                <a  v-for="(child_item,index) in item.article"  
                                  :data-id="index" :data-url="child_item.description" @click="secondPath">{{child_item.title}}</a>
                             </div>
                         </div>
@@ -123,14 +127,9 @@ var app = new Vue({
                 self.menu = res.info.data;
                 console.log('menu',self.menu);
                 if(self.menu.length>0){
-                    for(var i=0;i<self.menu.length;i++){
-                        if(self.menu[i].title=='导航'){
-                            self.menuData.push(self.menu[i].child);
-                            self.mainData = self.menuData[0];
-                            console.log('mainData',self.mainData);
-                        }
-                    }
-                    
+                    self.menuData = window.base.findKeyFromArray(self.menu,'title','导航')[0].child;
+                    console.log('menuData',self.menuData)
+
                 }
             };
             window.base.labelGet(postData, callback);
@@ -144,16 +143,6 @@ var app = new Vue({
             }else{
                 return;
             };     
-            var postData = {};           
-            postData.searchItem = {
-              thirdapp_id:2,
-            };
-            postData.searchItem.menu_id = currentId;
-              var  callback = function(res){
-                self.articleData = res.info.data;
-                console.log('articleData',self.articleData);
-            };
-            window.base.articleList(postData, callback);
         },
         menuHide: function(e) {
             const self =this;                              
@@ -184,8 +173,12 @@ var app = new Vue({
             var dataset = window.base.getDataSet(e)
             var toUrls = dataset.url;
             var art_id = dataset.id;
-            console.log(222,toUrls,art_id)
-            window.location.href = toUrls+'?id='+art_id;
+            if(toUrls&&art_id){
+                window.location.href = toUrls+'?id='+art_id;
+            }else{
+                window.location.href = toUrls;
+            }
+            
 
         }
     }

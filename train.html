@@ -68,16 +68,16 @@
                         <li class="list_li" style="height:0.2rem;">
                             <span></span><a></a>
                         </li>
-                        <div v-for="(item,index) in labelData.child">
+                        <div v-for="(item,index) in secondData.child">
                             <li>
                                 <span></span>
                                 <a  :data-id="item.id" @click="changeMenu">{{item.title}}
-                                    <img @click="tab(index)" :data-id="item.id" v-if="item.child" src="images/up.jpg"/>
+                                    <img @click="tab(index)" :data-id="item.id" src="images/up.jpg"/>
                                 </a>
                             </li>
-                             <div class="list_two" :style="tabId==index?'display:block':'display:none;'">
-                                <div v-if="item.child" :data-id="items.id" @click="changeMenu" v-for="(items,index) in item.child">
-                                    <span></span><p :data-id="items.id" @click="changeMenu">{{items.title}}</p>
+                             <div class="list_two" >
+                                <div  :data-id="items.id" @click="changeMenu" v-for="(items,index) in item.article">
+                                    <span></span><p :data-id="items.id" @click="changeMenu(index)">{{items.title}}</p>
                                 </div>
                             </div>
                         </div>
@@ -86,14 +86,11 @@
             </div>
             <div class="show_menu" @click="menu">点击切换</div>
             <div class="content_right">
-                <div class="detail_cont" v-for="(item,index) in mainData">
-                    <div class="companny_tlt">
-                        <h2>{{item.title}}</h2>
-                        <img src="images/tlt_bg.png"/>
-                    </div>
-                    <div class="detail">
-                        <p v-html="item.content"></p>
-                        
+                <div class="detail_cont" v-for="(item,index) in middleData" :style="articleId == index?'display:block':'display:none'">
+                    <div v-for="items in item">
+                        <div class="detail">
+                            <p v-html="items.content"></p>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -174,6 +171,7 @@ var app = new Vue({
             middleData:[],
             currentId:999,
             tabId:false,
+            articleId:0,
         }
     },
     created () {
@@ -188,53 +186,44 @@ var app = new Vue({
                   thirdapp_id:2,
                   type:1,
                 };
-                order:{
-                  listorder:'asc'
-                }
+                postData.getAfter={
+                  article:{
+                    tableName:'article',
+                    middleKey:'id',
+                    key:'menu_id',
+                    condition:'in'
+                  }
+                };
             
             var  callback = function(res){
                     self.menuData = res.info.data;
-                    if(self.menuData.length>0){
-                     self.labelData = window.base.findKeyFromArray(self.menuData,'title','技术培训')[0]; 
-                         
+                    self.labelData = window.base.findKeyFromArray(self.menuData,'title','导航')[0]; 
+                    console.log('labelData',self.labelData);
+                    if(self.labelData.child.length>0){
+                     self.secondData = window.base.findKeyFromArray(self.labelData.child,'title','技术培训')[0]; 
+                     console.log('secondData',self.secondData);
+                         if(self.secondData.child.length>0){
+                            for(var i=0;i<self.secondData.child.length;i++){
+                               self.middleData.push(self.secondData.child[i].article) ;
+                               console.log('middleData',self.middleData);
+                            }
+                        }
                     }
-                    self.getMainData();
+                   
                 };
             window.base.labelGet(postData, callback);
         },
-        getMainData(id){
-                var self = this;
-                var postData = {};
-                postData.paginate = window.base.cloneForm(self.paginate);
-                postData.searchItem = {
-                  thirdapp_id:2
-                };
-                 if(id){
-                    postData.searchItem.menu_id = id; 
-                    
-                }else{
-                    postData.searchItem.menu_id = self.labelData.child[0].id
-                }
-                var callback = (res) => {
-                    console.log('getMainData', res);
-                    self.mainData = res.info.data;
-                    console.log(9999,self.mainData);
-                    self.paginate['count'] = res.info.total;
-                    window.base.computePageArr(self);
-                };
-                window.base.articleList(postData, callback);
-            },
+    
             changePage(e) {
                 var self = this;
                 var dataSet = window.base.getDataSet(e);
                 window.base.changePage(dataSet, self);
             },
-            changeMenu(e) {
-                var self = this;
-                self.paginate = { count: 0, currentPage: 1, pagesize: 6, is_page: true, };
-                var id = window.base.getDataSet(e).id;
-                self.getMainData(id);
-                self.currentId = id;
+            changeMenu(id) {
+               var self = this;
+                var articleId = id;
+                self.articleId = articleId;
+                console.log('articleId',self.articleId)
             },
             tab(index){
                 var self =this;

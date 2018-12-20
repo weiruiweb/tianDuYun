@@ -1107,9 +1107,6 @@ input,textarea {outline: none; -webkit-box-shadow: none; box-shadow: none;-webki
     background:#f2f2f2;
 
 }
-.list_two{
-    display:none;
-}
 .list_two p{
     width:99%;
     height:0.6rem;
@@ -1152,4 +1149,19 @@ input,textarea {outline: none; -webkit-box-shadow: none; box-shadow: none;-webki
 .companny_item:hover{
     transform:translateY(-6px);
     -webkit-transform:translateY(-6px);
+}
+.case_lefts,.case_rights{
+    width:50%;
+    float: left;
+}
+.case_rights{
+    text-align:right;
+}
+.case_rights img{
+    width:0.24rem;
+    height:0.16rem;
+    margin-right:0.2rem;
+}
+.information_P p{
+    height:0.36rem;
 }
