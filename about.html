@@ -1,0 +1,168 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>天度云</title>
+<!-- custom-theme -->
+<meta name="baidu-site-verification" content="z8EeuYl0nS" />
+<meta name="keywords" content="天度云">
+<meta name="description" content="天度云">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="keywords" content="Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, SonyEricsson, Motorola web design" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no" />
+<link href="css/basic.css" rel="stylesheet" type="text/css"/>
+<link href="css/style.css" rel="stylesheet" type="text/css"/>
+<link href="css/responsive.css" rel="stylesheet" type="text/css"/>
+<link href="css/bootstrap.css" rel="stylesheet" type="text/css" media="all" />
+<!-- <link href="css/animate.css" rel="stylesheet" type="text/css" media="all" /> -->
+<link href="css/font-awesome.min.css" rel="stylesheet">
+<script src="js/browser.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script src="js/vue-seamless-scroll.min.js"></script>
+<script src="js/base.js" type="application/javascript"></script>
+<script type="text/javascript" src="js/jquery-2.1.4.min.js"></script>
+<script src="js/rem.js"></script>
+
+<!--[if IE 9]>
+ <style>
+    .animatedOpacity{
+        opacity:1;
+        }
+    .sort_in{
+    margin-top:0.3rem;
+    }
+ </style>
+<![endif]-->
+<style>
+    .red{
+        color:red;
+    }
+</style>
+</head>
+<body style="background:#f8f8f8;">
+<div class="header"></div>
+<div id="app">
+    <div class="banner2">
+        <img :src="titleData.mainImg&&titleData.mainImg[0]?titleData.mainImg[0].url:''" class="img-responsive banner_img">
+    </div>
+    <div class="bread">
+        <div class="contain">
+            <img src="images/home.png"/>
+            <p class="color9">你所在的位置:<a href="index.html">首页></a>关于天度云</p>
+        </div>
+    </div>
+    <div class="content_center">
+        <div class="contain">
+            <div class="content_left" :class="(is_menu?'slideIn':'')">
+                <div class="content_left_cont">
+                    <div class="content_tlt color">
+                        关于天度云
+                    </div>
+                    <ul class="list_menu">
+                        <li class="list_li" style="height:0.2rem;">
+                            <span></span><a></a>
+                        </li>
+                        <li v-for="(item,index) in mainData" :data-id="item.id" @click="changeMenu(index)">
+                            <span :style="currentId == index?'display:block':'display:none'" >
+                            </span>
+                            <a ><p >{{item.title}}</p></a></li>
+                       
+                    </ul>
+                </div>
+            </div>
+            <div class="show_menu" @click="menu">点击切换</div>
+            <div class="content_right" >
+                <div class="detail_cont" v-for="(item,index) in mainData" :style="currentId == index?'display:block':'display:none'">
+                    <div class="companny_tlt">
+                        <h2>{{item.title}}</h2>
+                        <img src="images/tlt_bg.png"/>
+                    </div>
+                    <div class="detail">
+                        <p v-html="item.content"></p>
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="footer">
+</div>
+<script type="text/javascript" src="js/jquery-2.1.4.min.js"></script>
+<script type="text/javascript " src="js/bootstrap.js"></script>
+
+
+<script src="js/rem.js"></script>
+<script type="text/javascript">
+var app = new Vue({
+    el: '#app',
+    data: function() {
+        return {
+            menu_id:0,
+            is_menu:false,
+            paginate: { 
+                    count: 0, 
+                    currentPage: 1, 
+                    pagesize:9, 
+                    is_page: true, 
+            },
+            searchItem:{ 
+                thirdapp_id: 21,
+               // menu_id:5,
+            },
+            pageArray: [],
+            allPages: 0,
+            menuData:[],
+            labelData:[],
+            titleData:[],
+            mainData:[],
+            secondData:[],
+            currentId:0
+        }
+    },
+    created () {
+        const self = this;
+        self.getMainData();
+    },
+    methods:{
+        getMainData(){
+            var self = this;
+            var urlId = window.base.GetRequest().id;
+            if(urlId){
+                self.currentId = urlId;
+            }
+            var postData = {};
+            postData.paginate = window.base.cloneForm(self.paginate);
+            postData.searchItem = {
+              thirdapp_id:2,
+              menu_id:2
+            };
+            var callback = (res) => {
+                self.mainData = res.info.data;
+            };
+            window.base.articleList(postData, callback);
+        },
+        changePage(e) {
+            var self = this;
+            var dataSet = window.base.getDataSet(e);
+            window.base.changePage(dataSet, self);
+        },
+        changeMenu(index) {
+            var self = this;
+            var id = index;
+            console.log(333,id);
+            self.currentId = id;
+        },
+        menu:function(e){
+            var self = this;
+            self.is_menu = !self.is_menu;
+        },
+    }
+});
+$(function(){
+    $('.header').load('./header.html');
+    $('.footer').load('./footer.html');
+});
+</script>
+</body>
+</html>

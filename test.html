@@ -1,0 +1,466 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>天度云</title>
+<!-- custom-theme -->
+<meta name="baidu-site-verification" content="z8EeuYl0nS" />
+<meta name="keywords" content="天度云">
+<meta name="description" content="天度云">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="keywords" content="Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, SonyEricsson, Motorola web design" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no" />
+<link href="css/basic.css" rel="stylesheet" type="text/css"/>
+<link href="css/style.css" rel="stylesheet" type="text/css"/>
+<link href="css/responsive.css" rel="stylesheet" type="text/css"/>
+<link href="css/bootstrap.css" rel="stylesheet" type="text/css" media="all" />
+<!-- <link href="css/animate.css" rel="stylesheet" type="text/css" media="all" /> -->
+<link href="css/font-awesome.min.css" rel="stylesheet">
+<script src="js/browser.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script src="js/vue-seamless-scroll.min.js"></script>
+<script src="js/base.js" type="application/javascript"></script>
+<script type="text/javascript" src="js/jquery-2.1.4.min.js"></script>
+<script src="js/rem.js"></script>
+
+<!--[if IE 9]>
+ <style>
+    .animatedOpacity{
+        opacity:1;
+        }
+    .sort_in{
+    margin-top:0.3rem;
+    }
+ </style>
+<![endif]-->
+<style>
+    .wd800{
+          width:800px;
+          margin:30px auto;
+        }
+            .warp {
+                height: 260px;
+                width: 360px;
+                overflow: hidden;
+            }
+
+            .warp ul {
+                list-style: none;
+                padding: 0;
+                margin: 0 auto;
+            }
+
+            .warp li {
+                height: 30px;
+                line-height: 30px;
+                display: flex;
+                justify-content: space-between;
+                font-size: 15px;
+            }
+            .demo4 {
+                width: 1200px !important;
+              }
+              .ul-item {
+                list-style: none;
+                margin: 0;
+                padding: 0;
+                width: 1200px;}
+                .li-item {
+                  float: left;
+                  width: 23%;
+                  height: 124px;
+                  margin:0 1%;
+                  line-height: 124px;
+                  background-color: lightgray;
+                  font-family: 'Amaranth', sans-serif;
+                  font-size: 82px;
+                  text-align: center;
+                }
+
+              .warp2 {
+                width: 1200px;
+                height: 150px;
+                overflow: hidden;
+              }
+
+              .test {
+                height: 126px;
+                width: 600px;
+                overflow: hidden;
+                font-size: 14px;
+              }
+
+              .test .item {
+                display: flex;
+                margin-top: 10px;}
+                div {
+                  flex: 1;
+                }
+                a {
+                  display: block;
+                }
+                .flex{
+                  display:flex;
+                }
+  }
+</style>
+</head>
+<body style="background:#fff;">
+<div id="app">
+    <header>
+        <div class="navigation fixed-top">
+          <div class="navigation_box contain contain_big">
+             <div class="navigation_left flex">
+                 <a href="index.html"><img src="images/logo.jpg" class="img-responsive"></a>
+             </div>
+             <div class="nav_toggle hidden-this" @click="toggleMenu">
+                 <img src="images/nav.png" />
+             </div>
+             <div class="navigation_right" id="computer">
+                 <ul class="navigate">
+                    <li data-id="0"  @mouseover="menuShow"><a href="index.html" class="active">首页</a></li>
+                    <li data-id="1" @mouseover="menuShow">
+                        <a href="about.html">关于天度云</a>
+                        <div class="second_menu" :class="(menu_id==1?'after1':'orgin1')">
+                            <div class="contain">
+                                <a>企业介绍</a>
+                                <a>企业使命</a>
+                                <a>服务宗旨</a>
+                                <a>团队建设</a>
+                            </div>
+                        </div>
+                    </li>
+                    <li  data-id="2" @mouseover="menuShow">
+                        <a href="customize.html">解决方案</a>
+                        <div class="second_menu" :class="(menu_id==2?'after1':'orgin1')">
+                            <div class="contain">
+                                <div class="second_all">
+                                    <a>解决方案</a>
+                                    <a>解决方案</a>
+                                    <a>解决方案</a>
+                                    <a>解决方案</a>
+                                    <a>解决方案</a>
+                                    <a>解决方案</a>
+                                    <a>解决方案</a>
+                                    <a>解决方案</a>
+                                    <a>解决方案</a>
+                                    <a>解决方案</a>
+                                    <a>解决方案</a>
+                                    <a>解决方案</a>
+                                    <a>解决方案</a>
+                                    <a>解决方案</a>
+                                    <a>解决方案</a>
+                                    <a>解决方案</a>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li  data-id="3" @mouseover="menuShow">
+                        <a href="agent.html">项目案例</a>
+                        <div class="second_menu" :class="(menu_id==3?'after1':'orgin1')">
+                            <div class="contain">
+                                <div class="second_all">
+                                    <a>项目案例1</a>
+                                    <a>项目案例1</a>
+                                    <a>项目案例1</a>
+                                    <a>项目案例1</a>
+                                    <a>项目案例1</a>
+                                    <a>项目案例1</a>
+                                    <a>项目案例1</a>
+                                    <a>项目案例1</a>
+                                    <a>项目案例1</a>
+                                    <a>项目案例1</a>
+                                    <a>项目案例1</a>
+                                    <a>项目案例1</a>
+                                    <a>项目案例1</a>
+                                    <a>项目案例1</a>
+                                    <a>项目案例1</a>
+                                    <a>项目案例1</a>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li  data-id="4" @mouseover="menuShow">
+                        <a href="about.html">销售&租赁</a>
+                        <div class="second_menu" :class="(menu_id==4?'after1':'orgin1')">
+                            <div class="contain">
+                                <div class="second_all">
+                                    <a>设备售卖</a>
+                                    <a>设备租赁</a>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li  data-id="5" @mouseover="menuShow">
+                        <a href="agent.html">数据中心</a>
+                        <div class="second_menu" :class="(menu_id==5?'after1':'orgin1')">
+                            <div class="contain">
+                                <div class="second_all">
+                                    <a>业务介绍</a>
+                                    <a>业务流程</a>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li  data-id="6" @mouseover="menuShow">
+                        <a href="about.html">技术培训</a>
+                        <div class="second_menu" :class="(menu_id==6?'after1':'orgin1')">
+                            <div class="contain">
+                                <div class="second_all">
+                                    <a>介绍培训业务</a>
+                                    <a>培训案例</a>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li data-id="7" @mouseover="menuShow"><a href="about.html">资讯动态</a></li>
+                    <li data-id="8" @mouseover="menuShow"><a href="agent.html">联系我们</a></li>
+                </ul>
+             </div>
+             <div class="navigation_right orgin" :class="(is_toggle?'after':'')" id="phone">
+                 <ul class="navigate">
+                    <li>
+                        <a href="index.html" class="active" data-id="0"  @click="menuShow1">首页</a>
+                    </li>
+                    <li>
+                        <a href="javascript:void(0);" data-id="1" @click="menuShow1">关于天度云</a>
+                        <div class="second_menu_phone" :class="(menu_id==1?'after_phone':'orgin_phone')">
+                            <div class="contain">
+                                <a>企业介绍</a>
+                                <a>企业使命</a>
+                                <a>服务宗旨</a>
+                                <a>团队建设</a>
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <a href="javascript:void(0);"  data-id="2" @click="menuShow1">解决方案</a>
+                        <div class="second_menu_phone" :class="(menu_id==2?'after_phone':'orgin_phone')">
+                            <div class="contain">
+                                <div class="second_all">
+                                    <a>解决方案</a>
+                                    <a>解决方案</a>
+                                    <a>解决方案</a>
+                                    <a>解决方案</a>
+                                    <a>解决方案</a>
+                                    <a>解决方案</a>
+                                    <a>解决方案</a>
+                                    <a>解决方案</a>
+                                    <a>解决方案</a>
+                                    <a>解决方案</a>
+                                    <a>解决方案</a>
+                                    <a>解决方案</a>
+                                    <a>解决方案</a>
+                                    <a>解决方案</a>
+                                    <a>解决方案</a>
+                                    <a>解决方案</a>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <a href="javascript:void(0);"  data-id="3" @click="menuShow1">项目案例</a>
+                        <div class="second_menu_phone" :class="(menu_id==3?'after_phone':'orgin_phone')">
+                            <div class="contain">
+                                <div class="second_all">
+                                    <a>项目案例1</a>
+                                    <a>项目案例1</a>
+                                    <a>项目案例1</a>
+                                    <a>项目案例1</a>
+                                    <a>项目案例1</a>
+                                    <a>项目案例1</a>
+                                    <a>项目案例1</a>
+                                    <a>项目案例1</a>
+                                    <a>项目案例1</a>
+                                    <a>项目案例1</a>
+                                    <a>项目案例1</a>
+                                    <a>项目案例1</a>
+                                    <a>项目案例1</a>
+                                    <a>项目案例1</a>
+                                    <a>项目案例1</a>
+                                    <a>项目案例1</a>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <a href="javascript:void(0);"  data-id="4" @click="menuShow1">销售&租赁</a>
+                        <div class="second_menu_phone" :class="(menu_id==4?'after_phone':'orgin_phone')">
+                            <div class="contain">
+                                <div class="second_all">
+                                    <a>设备售卖</a>
+                                    <a>设备租赁</a>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <a href="javascript:void(0);"  data-id="5" @click="menuShow1">数据中心</a>
+                        <div class="second_menu_phone" :class="(menu_id==5?'after_phone':'orgin_phone')">
+                            <div class="contain">
+                                <div class="second_all">
+                                    <a>业务介绍</a>
+                                    <a>业务流程</a>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <a href="javascript:void(0);"  data-id="6" @click="menuShow1">技术培训</a>
+                        <div class="second_menu_phone" :class="(menu_id==6?'after_phone':'orgin_phone')">
+                            <div class="contain">
+                                <div class="second_all">
+                                    <a>介绍培训业务</a>
+                                    <a>培训案例</a>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li data-id="7" @click="menuShow1"><a href="javascript:void(0);">资讯动态</a></li>
+                    <li data-id="8" @click="menuShow1"><a href="javascript:void(0);">联系我们</a></li>
+                </ul>
+             </div>
+          </div>  
+        </div>
+    </header>
+    <div class="banner2">
+        <div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
+            <ol class="carousel-indicators">
+                <li data-target="#carousel-example-generic" data-slide-to="0" class="active"></li>
+                <li data-target="#carousel-example-generic" data-slide-to="1"></li>
+            </ol>
+            <div class="carousel-inner" role="listbox">
+                <div  class="item active">
+                  <img src="images/banner.jpg" class="img-responsive banner_img">
+                </div>
+                <div  class="item">
+                  <img src="images/banner.jpg" class="img-responsive banner_img">
+                </div>
+            </div>  
+        </div>
+    </div>
+    <div class="companny">
+        <div class="contain">
+            <div class="companny_tlt">
+                <h2>关于天度云</h2>
+                <img src="images/tlt_bg.png"/>
+                <p>about</p>
+            </div>
+            <div class="companny_intro color6">
+                陕西天度云激光科技有限公司是一家主要从事空间三维信息技术的数据获取、数据加工与处理、成果展示及三维技术培训，三 维扫描设备租赁
+            </div>
+            <a class="more color">查看更多</a>
+            <div class="companny_cont">
+                <div class="companny_item">
+                    <img src="images/case1.jpg">
+                    <div class="companny_word color">数据中心</div>
+                </div>
+                <div class="companny_item">
+                    <img src="images/case1.jpg">
+                    <div class="companny_word color">数据中心</div>
+                </div>
+                <div class="companny_item">
+                    <img src="images/case1.jpg">
+                    <div class="companny_word color">数据中心</div>
+                </div>
+                <div class="companny_item">
+                    <img src="images/case1.jpg">
+                    <div class="companny_word color">数据中心</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="service">
+        <div class="contain">
+            <div class="companny_tlt">
+                <h2 class="color">服务范围</h2>
+                <img src="images/tlt_bg.png"/>
+                <p style="color:#fff">service</p>
+            </div>
+            <div class="service_cont">
+                内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内
+            </div>
+            <a class="more color">查看更多</a>
+        </div>
+    </div>
+    <div class="cooper">
+        <div class="contain">
+            <div class="companny_tlt">
+                <h2 class="color">合作伙伴</h2>
+                <img src="images/tlt_bg.png"/>
+                <p style="color:#fff">partner</p>
+            </div>
+            <div class="test">
+              <div class="options" style="color:#357edd;width:0;">
+                var option = {autoPlay: false}
+              </div>
+              <vue-seamless-scroll :class-option="classOption3" class="warp2 demo4">
+                <span class="name" slot="left-switch" style="display: block;width: 30px;height: 40px;cursor: pointer;background-color:yellow;text-align: center;line-height:40px;">&lt;</span>
+                <ul class="ul-item clearfix">
+                  <li class="li-item" v-for="item in listData3">{{item}}</li>
+                </ul>
+                <span class="name" slot="right-switch" style="display: block;width: 30px;height: 40px;cursor: pointer;background-color:yellow;text-align: center;line-height:40px;">&gt;</span>
+              </vue-seamless-scroll>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript" src="js/jquery-2.1.4.min.js"></script>
+<script type="text/javascript " src="js/bootstrap.js"></script>
+
+
+<script src="js/rem.js"></script>
+<script type="text/javascript">
+var app = new Vue({
+    el: '#app',
+    data: function() {
+        return {
+            is_toggle:false,
+            menu_id:0,
+            listData3: [1, 2, 3, 4, 5, 6,7,8,9,10,11,12,12,12,12,12,12,12],
+            ulItem2Width: 0
+        }
+    },
+    computed: {
+        classOption3 () {
+               return {
+                  autoPlay: false,
+                  limitMoveNum: 4
+                }
+              },
+            },
+        created () {
+            },
+        methods:{
+            menuShow: function(e) {
+                var self =this;
+                console.log(e);
+                var dataSet = window.base.getDataSet(e);
+                if(dataSet.id){
+                       self.menu_id = dataSet.id;  
+                    }           
+                console.log('dataSet',dataSet.id);          
+            },
+            menuShow1: function(e) {
+                var self =this;
+                console.log(e);
+                var dataSet = window.base.getDataSet(e);
+                if(dataSet.id){
+                       self.menu_id = dataSet.id;  
+                    }           
+                console.log('dataSet',dataSet.id);          
+            },
+            toggleMenu:function(e){
+                var self = this;
+                self.is_toggle = !self.is_toggle;
+            },
+        }
+});
+</script>
+<script>
+    function back_top(){
+     document.body.scrollTop = document.documentElement.scrollTop = 0;
+     }
+ </script>
+</body>
+</html>

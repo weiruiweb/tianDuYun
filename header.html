@@ -1,0 +1,200 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>天度云</title>
+<!-- custom-theme -->
+<meta name="baidu-site-verification" content="z8EeuYl0nS" />
+<meta name="keywords" content="天度云">
+<meta name="description" content="天度云">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="keywords" content="Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, SonyEricsson, Motorola web design" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no" />
+<link href="css/basic.css" rel="stylesheet" type="text/css"/>
+<link href="css/style.css" rel="stylesheet" type="text/css"/>
+<link href="css/responsive.css" rel="stylesheet" type="text/css"/>
+<link href="css/bootstrap.css" rel="stylesheet" type="text/css" media="all" />
+<link href="css/font-awesome.min.css" rel="stylesheet">
+<script src="js/browser.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script src="js/vue-seamless-scroll.min.js"></script>
+<script src="js/base.js" type="application/javascript"></script>
+<script type="text/javascript" src="js/jquery-2.1.4.min.js"></script>
+<script src="js/rem.js"></script>
+
+<!--[if IE 9]>
+ <style>
+    .animatedOpacity{
+        opacity:1;
+        }
+    .sort_in{
+    margin-top:0.3rem;
+    }
+ </style>
+<![endif]-->
+<style>
+</style>
+</head>
+<body style="background:#fff;">
+<div id="app">
+    <header>
+        <div class="navigation fixed-top">
+          <div class="navigation_box contain contain_big">
+             <div class="navigation_left flex">
+                 <a href="index.html"><img src="images/logo.jpg" class="img-responsive"></a>
+             </div>
+             <div class="nav_toggle hidden-this" @click="toggleMenu">
+                 <img src="images/nav.png" />
+             </div>
+             <div class="navigation_right" id="computer">
+                 <ul class="navigate">
+                   <li  v-for="(item,index) in mainData"   @mouseover="menuShow(item.id)">
+                        <a href="javascript:void(0);" @click="intoPath(item.url)">{{item.title}}</a>
+                        <div class="second_menu" v-if="articleData.length>0" :class="(menu_id==item.id?'after1':'orgin1')" >
+                            <div class="contain">
+                                <a  v-for="(child_item,index) in articleData"  
+                                 :data-id="index" :data-url="child_item.description" @click="secondPath">{{child_item.title}}</a>
+                            </div>
+                        </div>
+                    </li>
+                    <div :style="menu_id>0?'display:block':'display:none'" class="bottom_line"  @mouseover="menuHide"></div>
+                </ul>
+             </div>
+             <div class="navigation_right orgin" :class="(is_toggle?'after':'')" id="phone">
+                 <ul class="navigate">
+                    <li  v-for="(item,index) in mainData">
+                        <a href="javascript:void(0);" @click="menuPhone(item.id)">{{item.title}}</a>
+                        <div class="second_menu_phone" :class="(currentId1 ==item.id?'after_phone':'orgin_phone')">
+                            <div class="contain">
+                                <a  v-for="(child_item,index) in item.article"  
+                                 :data-id="index" :data-url="child_item.url">{{child_item.title}}</a>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+             </div>
+          </div>  
+        </div>
+    </header>
+</div>
+<script type="text/javascript" src="js/jquery-2.1.4.min.js"></script>
+<script type="text/javascript " src="js/bootstrap.js"></script>
+
+
+<script src="js/rem.js"></script>
+<script type="text/javascript">
+var app = new Vue({
+    el: '#app',
+    data: function() {
+        return {
+            is_toggle:false,
+            menu_id:0,
+            menu:[],
+            menuData:[],
+            mainData:[],
+            articleData:[],
+            currentId1:0,
+        }
+    },
+    created () {
+        const self = this;
+        self.getMainData();
+    },
+    methods:{
+    getMainData: function() {
+            var self = this;
+            var postData = {};
+            postData.searchItem = {
+              thirdapp_id:2,
+              type:1,
+            };
+            postData.order = {
+              listorder:'desc'
+            };
+            postData.getAfter={
+              article:{
+                tableName:'article',
+                middleKey:'id',
+                key:'menu_id',
+                condition:'in'
+              }
+            };
+            var  callback = function(res){
+                self.menu = res.info.data;
+                console.log('menu',self.menu);
+                if(self.menu.length>0){
+                    for(var i=0;i<self.menu.length;i++){
+                        if(self.menu[i].title=='导航'){
+                            self.menuData.push(self.menu[i].child);
+                            self.mainData = self.menuData[0];
+                            console.log('mainData',self.mainData);
+                        }
+                    }
+                    
+                }
+            };
+            window.base.labelGet(postData, callback);
+        },
+        menuShow: function(id) {
+            const self =this;
+            var currentId = id;
+            console.log('currentId',currentId)
+            if(currentId){
+               self.menu_id = currentId;  
+            }else{
+                return;
+            };     
+            var postData = {};           
+            postData.searchItem = {
+              thirdapp_id:2,
+            };
+            postData.searchItem.menu_id = currentId;
+              var  callback = function(res){
+                self.articleData = res.info.data;
+                console.log('articleData',self.articleData);
+            };
+            window.base.articleList(postData, callback);
+        },
+        menuHide: function(e) {
+            const self =this;                              
+            self.menu_id = 0;                  
+        },
+        menuPhone: function(id) {
+            const self =this;
+            var currentId = id;
+            if(currentId){
+               self.currentId1 = currentId;  
+            }else{
+                return  
+            }        
+                     
+        },
+        toggleMenu:function(e){
+            const self = this;
+            self.is_toggle = !self.is_toggle;
+        },
+        intoPath(urls){
+            const self = this;
+            var toUrls = urls
+            window.location.href = toUrls;
+        },
+        secondPath(e){
+            const self = this;
+            console.log(e);
+            var dataset = window.base.getDataSet(e)
+            var toUrls = dataset.url;
+            var art_id = dataset.id;
+            console.log(222,toUrls,art_id)
+            window.location.href = toUrls+'?id='+art_id;
+
+        }
+    }
+});
+</script>
+<script>
+    function back_top(){
+     document.body.scrollTop = document.documentElement.scrollTop = 0;
+     }
+ </script>
+</body>
+</html>

@@ -1,0 +1,264 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>天度云</title>
+<!-- custom-theme -->
+<meta name="baidu-site-verification" content="z8EeuYl0nS" />
+<meta name="keywords" content="天度云">
+<meta name="description" content="天度云">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="keywords" content="Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, SonyEricsson, Motorola web design" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no" />
+<link href="css/basic.css" rel="stylesheet" type="text/css"/>
+<link href="css/style.css" rel="stylesheet" type="text/css"/>
+<link href="css/responsive.css" rel="stylesheet" type="text/css"/>
+<link href="css/bootstrap.css" rel="stylesheet" type="text/css" media="all" />
+<!-- <link href="css/animate.css" rel="stylesheet" type="text/css" media="all" /> -->
+<link href="css/font-awesome.min.css" rel="stylesheet">
+<script src="js/browser.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script src="js/vue-seamless-scroll.min.js"></script>
+<script src="js/base.js" type="application/javascript"></script>
+<script type="text/javascript" src="js/jquery-2.1.4.min.js"></script>
+<script src="js/rem.js"></script>
+
+<!--[if IE 9]>
+ <style>
+    .animatedOpacity{
+        opacity:1;
+        }
+    .sort_in{
+    margin-top:0.3rem;
+    }
+ </style>
+<![endif]-->
+<style>
+</style>
+</head>
+<body style="background:#f8f8f8;">
+<div class="header"></div>
+<div id="app">
+    <div class="banner2">
+        <img :src="titleData.mainImg&&titleData.mainImg[0]?titleData.mainImg[0].url:''" class="img-responsive banner_img">
+    </div>
+    <div class="bread">
+        <div class="contain">
+            <img src="images/home.png"/>
+            <p class="color9">你所在的位置:<a href="index.html">首页></a>项目案例</p>
+        </div>
+    </div>
+    <div class="content_center">
+        <div class="contain">
+            <div class="content_left" :class="(is_menu?'slideIn':'')">
+                <div class="content_left_cont">
+                    <div class="content_tlt color">
+                        项目案例
+                    </div>
+                    <ul class="list_menu">
+                        <li class="list_li" style="height:0.2rem;">
+                            <span></span><a></a>
+                        </li>
+                        <li v-for="(item,index) in titleData.child" :data-id="item.id" @click="changeMenu">
+                            <span :style="currentId == item.id?'display:block':'display:none'" :data-id="item.id" @click="changeMenu"></span>
+                            <a :data-id="item.id" @click="changeMenu">
+                                <p :data-id="item.id" @click="changeMenu">{{item.title}}</p></a></li>
+                       
+                    </ul>
+                </div>
+            </div>
+            <div class="show_menu" @click="menu">点击切换</div>
+            <div class="content_right">
+                <div class="detail_cont">
+                    <div class="case">
+                        <div class="case_list" v-for="item in mainData">
+                            <div class="case_left">
+                                <img :src="item.mainImg&&item.mainImg[0]?item.mainImg[0].url:''"/>
+                            </div>
+                            <div class="case_right">
+                                <h4>{{item.title}}</h4>
+                                <p>{{item.description}}</p>
+                            </div>
+                        </div>
+                        <div class="fenye">
+                            <span>
+                                共：{{allPages}}页
+                            </span>
+                            <a class="pages backPage" data-type="back" @click="changePage">上一页</a>
+                            <span v-for="item in pageArray">
+                                <a v-if="item == paginate.currentPage" class="currentpages active" >{{item}}</a>
+                                <a v-if="item != paginate.currentPage" class="currentpages" :data-page="item"  @click="linkTo">{{item}}</a>
+                            </span>
+                            <a class="pages nextPage" data-type="next" @click="changePage">下一页</a>
+                            <span>
+                                跳转至：
+                                <input style="border:1px solid black;" :data-page="linkPage" v-model="linkPage" @blur="linkTo" />
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="footer" style="margin-top:1rem;">
+    <div class="contain">
+        <div class="footer_top">
+            <div class="footer_top_left">
+                <a>首页</a><a>关于天度云</a><a>解决方案</a><a>项目案例</a><a>销售租赁</a><a>数据中心</a><a>技术培训</a><a>资讯动态</a>
+            </div>
+            <div class="footer_top_right">
+                <div class="contact_method">
+                    <a>
+                        <img src="images/email.png"/>
+                    </a>
+                </div>
+                <div class="contact_method">
+                    <a>
+                        <img src="images/QQ.png"/>
+                    </a>
+                </div>
+                <div class="contact_method">
+                    <a>
+                        <img src="images/weibo.png"/>
+                    </a>
+                </div>
+                <div class="contact_method">
+                    <a>
+                        <img src="images/wx_icon.png"/>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="footer_bottom">
+             <div class="footer_bottom_left">
+                <h2 class="color1">陕西天度云激光科技有限公司 </h2>
+                <p class="hot_phone color1" style="font-size:0.24rem;color:#fff;">热线电话：029-85129741</p>
+                <p>Copyright@2008-2016 xxxxxx公司 版权所有 闽ICP备10000000</p>
+                <p>网络文化经营许可证：10000000</p>
+             </div>
+             <div class="footer_bottom_right">
+                <img src="images/qrcode.jpg">
+                <img src="images/qrcode.jpg">
+             </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript" src="js/jquery-2.1.4.min.js"></script>
+<script type="text/javascript " src="js/bootstrap.js"></script>
+
+
+<script src="js/rem.js"></script>
+<script type="text/javascript">
+var app = new Vue({
+    el: '#app',
+    data: function() {
+        return {
+            menu_id:0,
+            is_menu:false,
+            paginate: { 
+                    count: 0, 
+                    currentPage: 1, 
+                    pagesize:8, 
+                    is_page: true, 
+            },
+            searchItem:{ 
+                thirdapp_id: 2,
+            },
+            linkPage:[],
+            pageArray: [],
+            allPages: 0,
+            menuData:[],
+            labelData:[],
+            titleData:[],
+            mainData:[],
+            secondData:[],
+            currentId:999
+        }
+    },
+    created () {
+        const self = this;
+        self.getLabelData();
+    },
+    methods:{
+        getLabelData(){
+            var self = this;
+            var postData = {};
+               postData.searchItem = {
+                  thirdapp_id:2,
+                  type:1,
+                };
+                order:{
+                  listorder:'desc'
+                }
+            
+            var  callback = function(res){
+                self.menuData = res.info.data;
+                if(self.menuData.length>0){
+                 self.labelData = window.base.findKeyFromArray(self.menuData,'title','导航')[0]; 
+                     if(self.labelData.child.length>0){
+                         self.titleData = window.base.findKeyFromArray(self.labelData.child,'title','项目案例')[0]; 
+                          console.log(9090,self.titleData);
+                          if(self.titleData.child.length>0){
+                            for(var i=0;i<self.titleData.child.length;i++){
+                                self.secondData.push(self.titleData.child[i].id)
+                                console.log(999,self.secondData);
+                            }
+                          }
+                     }
+                }
+                self.getMainData();
+            };
+            window.base.labelGet(postData, callback);
+        },
+        getMainData(id){
+                var self = this;
+                var postData = {};
+                postData.paginate = window.base.cloneForm(self.paginate);
+                postData.searchItem = {
+                  thirdapp_id:2
+                };
+                if(id){ 
+                    postData.searchItem.menu_id = id; 
+                }else{ 
+                    postData.searchItem.menu_id = ['in', self.secondData]; 
+                };
+                var callback = (res) => {
+                    console.log('getMainData', res);
+                    self.mainData = res.info.data;
+                    self.paginate['count'] = res.info.total;
+                    window.base.computePageArr(self);
+                };
+                window.base.articleList(postData, callback);
+            },
+            changePage(e) {
+                var self = this;
+                var dataSet = window.base.getDataSet(e);
+                window.base.changePage(dataSet, self);
+            },
+            changeMenu(e) {
+                var self = this;
+                self.paginate = { count: 0, currentPage: 1, pagesize: 6, is_page: true, };
+                var id = window.base.getDataSet(e).id;
+                self.getMainData(id);
+                self.currentId = id;
+            },
+            linkTo(e) {
+                var self = this;
+                console.log(e);
+                self.linkPage = window.base.getDataSet(e).page;
+                window.base.linkTo(self);
+            },
+            menu:function(e){
+                var self = this;
+                self.is_menu = !self.is_menu;
+            },
+    }
+});
+$(function(){
+        $('.header').load('./header.html');
+        $('.footer').load('./footer.html');
+    });
+</script>
+</body>
+</html>
