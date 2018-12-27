@@ -59,7 +59,7 @@
                         <li class="list_li" style="height:0.2rem;">
                             <span></span><a></a>
                         </li>
-                        <li v-for="(item,index) in menuData"  :data-id="item.id" @click="changeMenu">
+                        <li v-for="(item,index) in labelData"  :data-id="item.id" @click="changeMenu">
                             <span :style="art_id == item.id?'display:block':'display:none'" :data-id="item.id" @click="changeMenu"></span>
                             <a :data-id="item.id" @click="changeMenu">
                                 <p :data-id="item.id" @click="changeMenu">{{item.title}}</p></a></li>
@@ -142,7 +142,7 @@ var app = new Vue({
             linkPage:[],
             pageArray: [],
             allPages: 0,
-            menuData:[],
+            labelData:[],
             titleData:[],
             mainData:[],
             currentId:999,
@@ -162,7 +162,8 @@ var app = new Vue({
                postData.searchItem = {
                   thirdapp_id:2,
                   type:1,
-                  title:'资讯动态'
+                  title:'资讯动态',
+                  status:1,
                 };
                 postData.order={
                   listorder:'desc'
@@ -177,8 +178,8 @@ var app = new Vue({
               };
             var  callback = function(res){
                 self.titleData = res.info.data[0];
-                self.menuData = res.info.data[0].labelChild;
-                console.log('menuData',self.menuData);
+                self.labelData = res.info.data[0].labelChild;
+                console.log('labelData',self.labelData);
                 self.getMainData();
             };
             window.base.labelGet(postData, callback);
@@ -189,7 +190,8 @@ var app = new Vue({
                 self.art_id = window.base.GetRequest().id;
                 postData.paginate = window.base.cloneForm(self.paginate);
                 postData.searchItem = {
-                  thirdapp_id:2
+                  thirdapp_id:2,
+                  status:1,
                 };
                 if(id){ 
                     postData.searchItem.menu_id = id; 
