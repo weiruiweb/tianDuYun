@@ -68,13 +68,13 @@
                             <span></span><a></a>
                         </li>
                         <div v-for="(item,index) in secondData.childLabel">
-                            <li>
-                                <span></span>
-                                <a @click="tab(item.id)">{{item.title}}
+                            <li @click="tab(item.id)">
+                                <span :style="menu_id==item.id?'display:block':'display:none'"></span>
+                                <a >{{item.title}}
                                     <img src="images/up.jpg" class="hidden-xs" />
                                 </a>
                             </li>
-                             <div v-if="menu_id==item.id&&is_show" class="list_two" >
+                             <div :style="menu_id==item.id&&is_show?'display:block':'display:none'" class="list_two" >
                                 <div   v-for="(items,index) in mainData">
                                     <div :class="contentData.id==items.id?'chooesd':''"@click="chooseArticle(items)">
                                         
@@ -110,7 +110,7 @@ var app = new Vue({
     data: function() {
         return {
             art_id:0,
-            is_show:false;
+            is_show:false,
             menu_id:0,
             is_menu:false,
             is_menus:false,
@@ -173,7 +173,7 @@ var app = new Vue({
                         self.secondData = res.info.data[0];
                     };
                     console.log('secondData',self.secondData);
-                    self.secondData.childLabel = self.secondData.childLabel.reverse();
+                    self.secondData.childLabel = self.secondData.childLabel
                      if(urlId){
                             self.menu_id = urlId;
                         }else{
@@ -189,11 +189,14 @@ var app = new Vue({
             const  self = this;
             self.mainData = [];
             var postData = {};
-            
+            postData.order = {
+                listorder:'desc'
+            }
             postData.paginate = window.base.cloneForm(self.paginate);
             postData.searchItem = {
               menu_id:self.menu_id
             };
+
             var callback = (res) => {
                 
                 if(res.info.data.length>0){
@@ -222,10 +225,10 @@ var app = new Vue({
                 var self =this;
                 if(id!=self.menu_id){
                     self.menu_id = id;
-                    self.is_show != self.is_show;
-                    console.log('menu_id',self.menu_id)
                     self.getMainData()
                 };
+                self.is_show = !self.is_show;
+                console.log('is_show',self.is_show)
             },
         menu:function(e){
             var self = this;

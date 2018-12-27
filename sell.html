@@ -71,7 +71,7 @@
             </div>
             <div class="show_menu" @click="menu">点击切换</div>
             <div class="content_right">
-                <div class="detail_cont" v-if="mainData.length>0">
+                <div class="detail_cont">
                     <div v-if="contentType=='list'" v-for="(item,index) in mainData">
                         <div class="case_item" @click="getArticle(index)">
                             <div class="case_img">
@@ -87,9 +87,9 @@
                        <div v-html=" contentData.content"></div>
                     </div>
                 </div>
-                <div class="blank" v-else>
+              <!--   <div class="blank" v-else>
                     <img src="images/blank.png" />
-                 </div>  
+                 </div>  --> 
                 <div class="fenye">
                             <span>
                                 共：{{allPages}}页

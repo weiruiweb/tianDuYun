@@ -43,7 +43,7 @@
 <div class="header"></div>
 <div id="app">
     <div class="banner2">
-        <img :src="secondData.mainImg&&secondData.mainImg[0]?secondData.mainImg[0].url:''" class="img-responsive banner_img">
+        <img :src="secondData[0]?secondData[0].url:''" class="img-responsive banner_img">
     </div>
     <div class="bread">
         <div class="contain">
@@ -113,6 +113,7 @@ var app = new Vue({
         const self = this;
         self.getLabelData();
         self.getMainData();
+        self.getBannerData();
     },
     methods:{
         getLabelData(){
@@ -141,6 +142,33 @@ var app = new Vue({
             };
             window.base.labelGet(postData,callback); 
         },
+        getBannerData(){
+            const self= this;
+            var postData = {};
+               postData.searchItem = {
+                  thirdapp_id:2,
+                  type:1,
+                  title:'关于天度云'
+                };
+                postData.order = {
+                    listorder:'desc'
+                }
+                postData.getAfter={
+                  childLabel:{
+                    tableName:'label',
+                    middleKey:'id',
+                    key:'parentid',
+                    condition:'in'
+                  }
+                };
+            const callback = (res)=>{
+              if(res.info.data.length>0){
+                 self.secondData = res.info.data[0].mainImg;
+              }
+              self.getMainData();
+            };
+            window.base.labelGet(postData,callback); 
+        },
         getMainData(){
             var self = this;
             var urlId = window.base.GetRequest().id;
@@ -154,6 +182,7 @@ var app = new Vue({
             }
             var callback = (res) => {
                 self.mainData = res.info.data;
+                console.log('mainData',self.mainData);
                 if(urlId){
                     self.currentId = urlId;
                 }else{
