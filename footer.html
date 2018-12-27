@@ -38,48 +38,89 @@
 </head>
 <body style="background:#f8f8f8;">
 <div class="header"></div>
-<div class="footer">
-    <div class="contain">
-        <div class="footer_top">
-            <div class="footer_top_left">
-                <a href="http://www.tianduclouds.com/index.html">首页</a><a href="http://www.tianduclouds.com/about.html">关于天度云</a><a href="http://www.tianduclouds.com/solution.html">解决方案</a><a href="http://www.tianduclouds.com/case.html">项目案例</a><a href="http://www.tianduclouds.com/sell.html">销售租赁</a><a href="http://www.tianduclouds.com/data.html">数据中心</a><a href="http://www.tianduclouds.com/train.html">技术培训</a><a href="http://www.tianduclouds.com/information.html">资讯动态</a>
+<div id="footer">
+    <div class="footer">
+        <div class="contain">
+            <div class="footer_top">
+                <div class="footer_top_left">
+                    <a href="http://www.tianduclouds.com/index.html">首页</a><a href="http://www.tianduclouds.com/about.html">关于天度云</a><a href="http://www.tianduclouds.com/solution.html">解决方案</a><a href="http://www.tianduclouds.com/case.html">项目案例</a><a href="http://www.tianduclouds.com/sell.html">销售租赁</a><a href="http://www.tianduclouds.com/data.html">数据中心</a><a href="http://www.tianduclouds.com/train.html">技术培训</a><a href="http://www.tianduclouds.com/information.html">资讯动态</a>
+                </div>
+                <div class="footer_top_right">
+                    <div class="contact_method">
+                        <a>
+                            <img src="images/email.png"/>
+                        </a>
+                    </div>
+                    <div class="contact_method">
+                        <a>
+                            <img src="images/QQ.png"/>
+                        </a>
+                    </div>
+                    <div class="contact_method">
+                        <a>
+                            <img src="images/weibo.png"/>
+                        </a>
+                    </div>
+                    <div class="contact_method">
+                        <a>
+                            <img src="images/wx_icon.png"/>
+                        </a>
+                    </div>
+                </div>
             </div>
-            <div class="footer_top_right">
-                <div class="contact_method">
-                    <a>
-                        <img src="images/email.png"/>
-                    </a>
-                </div>
-                <div class="contact_method">
-                    <a>
-                        <img src="images/QQ.png"/>
-                    </a>
-                </div>
-                <div class="contact_method">
-                    <a>
-                        <img src="images/weibo.png"/>
-                    </a>
-                </div>
-                <div class="contact_method">
-                    <a>
-                        <img src="images/wx_icon.png"/>
-                    </a>
-                </div>
+            <div class="footer_bottom">
+                 <div class="footer_bottom_left">
+                    <h2 class="color1">陕西天度云激光科技有限公司 </h2>
+                    <p class="hot_phone color1" style="font-size:0.24rem;color:#fff;">热线电话：029-85129741</p>
+                    <p>Copyright@2008-2016 xxxxxx公司 版权所有 闽ICP备10000000</p>
+                    <p>网络文化经营许可证：10000000</p>
+                 </div>
+                 <div class="footer_bottom_right">
+                    <img  v-for="item in menu" :src="item.url">
+                 </div>
             </div>
-        </div>
-        <div class="footer_bottom">
-             <div class="footer_bottom_left">
-                <h2 class="color1">陕西天度云激光科技有限公司 </h2>
-                <p class="hot_phone color1" style="font-size:0.24rem;color:#fff;">热线电话：029-85129741</p>
-                <p>Copyright@2008-2016 xxxxxx公司 版权所有 闽ICP备10000000</p>
-                <p>网络文化经营许可证：10000000</p>
-             </div>
-             <div class="footer_bottom_right">
-                <img src="images/qrcode.jpg">
-                <img src="images/qrcode.jpg">
-             </div>
         </div>
     </div>
 </div>
+<script type="text/javascript" src="js/jquery-2.1.4.min.js"></script>
+<script type="text/javascript " src="js/bootstrap.js"></script>
+<script src="js/rem.js"></script>
+<script type="text/javascript">
+var app = new Vue({
+    el: '#footer',
+    data: function() {
+        return {
+           menu:[],
+        }
+    },
+    created () {
+        const self = this;
+        self.getMainData();
+    },
+    methods:{
+    getMainData: function() {
+            var self = this;
+            var postData = {};
+            postData.searchItem = {
+              thirdapp_id:2,
+              type:1,
+              title:'客服'
+            };
+            postData.order = {
+              listorder:'desc'
+            };
+            
+            var  callback = function(res){
+                if(res.info.data[0].mainImg.length>0){
+                    self.menu = res.info.data[0].mainImg;
+                }
+                
+               console.log('menu',self.menu)
+            };
+            window.base.labelGet(postData, callback);
+        },
+    }
+});
+</script>
 </body>
 </html>

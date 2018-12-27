@@ -14,7 +14,7 @@
 <link href="css/style.css" rel="stylesheet" type="text/css"/>
 <link href="css/responsive.css" rel="stylesheet" type="text/css"/>
 <link href="css/bootstrap.css" rel="stylesheet" type="text/css" media="all" />
-<!-- <link href="css/animate.css" rel="stylesheet" type="text/css" media="all" /> -->
+<link href="css/wxParse.css" rel="stylesheet"/>
 <link href="css/font-awesome.min.css" rel="stylesheet">
 <script src="js/browser.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
@@ -45,7 +45,7 @@
     <div class="bread">
         <div class="contain">
             <img src="images/home.png"/>
-            <p class="color9">你所在的位置:<a href="index.html">首页></a>项目案例</p>
+            <p class="color9">你所在的位置:<a href="index.html">首页></a>资讯动态</p>
         </div>
     </div>
     <div class="content_center">
@@ -59,8 +59,8 @@
                         <li class="list_li" style="height:0.2rem;">
                             <span></span><a></a>
                         </li>
-                        <li v-for="(item,index) in titleData.child" :data-id="item.id" @click="changeMenu">
-                            <span :style="currentId == item.id?'display:block':'display:none'" :data-id="item.id" @click="changeMenu"></span>
+                        <li v-for="(item,index) in menuData"  :data-id="item.id" @click="changeMenu">
+                            <span :style="art_id == item.id?'display:block':'display:none'" :data-id="item.id" @click="changeMenu"></span>
                             <a :data-id="item.id" @click="changeMenu">
                                 <p :data-id="item.id" @click="changeMenu">{{item.title}}</p></a></li>
                        
@@ -71,7 +71,7 @@
             <div class="content_right">
                 <div class="detail_cont">
                     <div class="case">
-                        <div class="case_list" v-for="item in mainData">
+                        <div class="case_list" v-if="contentType=='list'" v-for="(item,index) in mainData" @click="getArticle(index)">
                             <div class="case_left">
                                 <img :src="item.mainImg&&item.mainImg[0]?item.mainImg[0].url:''"/>
                             </div>
@@ -87,9 +87,16 @@
                                     </div>
                                 </div>
                             </div>
-                            
                         </div>
-                        <div class="fenye">
+                         <div v-if="contentType=='content'">
+                           <div v-if="contentData.content==''" class="blank">
+                               <img src="images/blank.png" />
+                           </div>
+                           <div v-html=" contentData.content" v-else></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="fenye">
                             <span>
                                 共：{{allPages}}页
                             </span>
@@ -104,54 +111,11 @@
                                 <input style="border:1px solid black;" :data-page="linkPage" v-model="linkPage" @blur="linkTo" />
                             </span>
                         </div>
-                    </div>
-                </div>
             </div>
         </div>
     </div>
 </div>
-<div class="footer" style="margin-top:1rem;">
-    <div class="contain">
-        <div class="footer_top">
-            <div class="footer_top_left">
-                <a>首页</a><a>关于天度云</a><a>解决方案</a><a>项目案例</a><a>销售租赁</a><a>数据中心</a><a>技术培训</a><a>资讯动态</a>
-            </div>
-            <div class="footer_top_right">
-                <div class="contact_method">
-                    <a>
-                        <img src="images/email.png"/>
-                    </a>
-                </div>
-                <div class="contact_method">
-                    <a>
-                        <img src="images/QQ.png"/>
-                    </a>
-                </div>
-                <div class="contact_method">
-                    <a>
-                        <img src="images/weibo.png"/>
-                    </a>
-                </div>
-                <div class="contact_method">
-                    <a>
-                        <img src="images/wx_icon.png"/>
-                    </a>
-                </div>
-            </div>
-        </div>
-        <div class="footer_bottom">
-             <div class="footer_bottom_left">
-                <h2 class="color1">陕西天度云激光科技有限公司 </h2>
-                <p class="hot_phone color1" style="font-size:0.24rem;color:#fff;">热线电话：029-85129741</p>
-                <p>Copyright@2008-2016 xxxxxx公司 版权所有 闽ICP备10000000</p>
-                <p>网络文化经营许可证：10000000</p>
-             </div>
-             <div class="footer_bottom_right">
-                <img src="images/qrcode.jpg">
-                <img src="images/qrcode.jpg">
-             </div>
-        </div>
-    </div>
+<div class="footer">
 </div>
 <script type="text/javascript" src="js/jquery-2.1.4.min.js"></script>
 <script type="text/javascript " src="js/bootstrap.js"></script>
@@ -164,11 +128,12 @@ var app = new Vue({
     data: function() {
         return {
             menu_id:0,
+            art_id:0,
             is_menu:false,
             paginate: { 
                     count: 0, 
                     currentPage: 1, 
-                    pagesize:8, 
+                    pagesize:6, 
                     is_page: true, 
             },
             searchItem:{ 
@@ -178,16 +143,17 @@ var app = new Vue({
             pageArray: [],
             allPages: 0,
             menuData:[],
-            labelData:[],
             titleData:[],
             mainData:[],
-            secondData:[],
-            currentId:999
+            currentId:999,
+            contentType:'list',
+            contentData:{}
         }
     },
     created () {
         const self = this;
         self.getLabelData();
+        self.getMainData();
     },
     methods:{
         getLabelData(){
@@ -196,26 +162,23 @@ var app = new Vue({
                postData.searchItem = {
                   thirdapp_id:2,
                   type:1,
+                  title:'资讯动态'
                 };
-                order:{
+                postData.order={
                   listorder:'desc'
                 }
-            
+             postData.getAfter={
+                  labelChild:{
+                    tableName:'label',
+                    middleKey:'id',
+                    key:'parentid',
+                    condition:'in'
+                  },
+              };
             var  callback = function(res){
-                self.menuData = res.info.data;
-                if(self.menuData.length>0){
-                 self.labelData = window.base.findKeyFromArray(self.menuData,'title','导航')[0]; 
-                     if(self.labelData.child.length>0){
-                         self.titleData = window.base.findKeyFromArray(self.labelData.child,'title','资讯动态')[0]; 
-         
-                          if(self.titleData.child.length>0){
-                            for(var i=0;i<self.titleData.child.length;i++){
-                                self.secondData.push(self.titleData.child[i].id)
-    
-                            }
-                          }
-                     }
-                }
+                self.titleData = res.info.data[0];
+                self.menuData = res.info.data[0].labelChild;
+                console.log('menuData',self.menuData);
                 self.getMainData();
             };
             window.base.labelGet(postData, callback);
@@ -223,6 +186,7 @@ var app = new Vue({
         getMainData(id){
                 var self = this;
                 var postData = {};
+                self.art_id = window.base.GetRequest().id;
                 postData.paginate = window.base.cloneForm(self.paginate);
                 postData.searchItem = {
                   thirdapp_id:2
@@ -230,7 +194,7 @@ var app = new Vue({
                 if(id){ 
                     postData.searchItem.menu_id = id; 
                 }else{ 
-                    postData.searchItem.menu_id = ['in', self.secondData]; 
+                    postData.searchItem.menu_id = self.art_id; 
                 };
                 var callback = (res) => {
                     console.log('getMainData', res);
@@ -239,6 +203,12 @@ var app = new Vue({
                     window.base.computePageArr(self);
                 };
                 window.base.articleList(postData, callback);
+            },
+            getArticle(index){
+                const self = this;
+                self.contentType = 'content';
+                self.contentData = self.mainData[index];
+                console.log('self.contentData',self.contentData)
             },
             changePage(e) {
                 var self = this;
@@ -250,7 +220,8 @@ var app = new Vue({
                 self.paginate = { count: 0, currentPage: 1, pagesize: 6, is_page: true, };
                 var id = window.base.getDataSet(e).id;
                 self.getMainData(id);
-                self.currentId = id;
+                self.art_id = id;
+                self.contentType = 'list';
             },
             linkTo(e) {
                 var self = this;

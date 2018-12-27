@@ -14,7 +14,7 @@
 <link href="css/style.css" rel="stylesheet" type="text/css"/>
 <link href="css/responsive.css" rel="stylesheet" type="text/css"/>
 <link href="css/bootstrap.css" rel="stylesheet" type="text/css" media="all" />
-<!-- <link href="css/animate.css" rel="stylesheet" type="text/css" media="all" /> -->
+<link href="css/wxParse.css" rel="stylesheet"/>
 <link href="css/font-awesome.min.css" rel="stylesheet">
 <script src="js/browser.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
@@ -40,7 +40,6 @@
     text-decoration: none;
 }
 .list_menu p{
-
 }
 </style>
 </head>
@@ -49,7 +48,7 @@
 <div class="header"></div>
 <div id="app">
     <div class="banner2">
-        <img src="images/banner.jpg" class="img-responsive banner_img">
+          <img :src="secondData.mainImg&&secondData.mainImg[0]?secondData.mainImg[0].url:''" class="img-responsive banner_img">
     </div>
     <div class="bread">
         <div class="contain">
@@ -68,16 +67,19 @@
                         <li class="list_li" style="height:0.2rem;">
                             <span></span><a></a>
                         </li>
-                        <div v-for="(item,index) in secondData.child">
+                        <div v-for="(item,index) in secondData.childLabel">
                             <li>
                                 <span></span>
-                                <a  :data-id="item.id" @click="changeMenu">{{item.title}}
-                                    <img @click="tab(index)" :data-id="item.id" src="images/up.jpg"/>
+                                <a @click="tab(item.id)">{{item.title}}
+                                    <img src="images/up.jpg" class="hidden-xs" />
                                 </a>
                             </li>
-                             <div class="list_two" >
-                                <div  :data-id="items.id" @click="changeMenu" v-for="(items,index) in item.article">
-                                    <span></span><p :data-id="items.id" @click="changeMenu(index)">{{items.title}}</p>
+                             <div v-if="menu_id==item.id&&is_show" class="list_two" >
+                                <div   v-for="(items,index) in mainData">
+                                    <div :class="contentData.id==items.id?'chooesd':''"@click="chooseArticle(items)">
+                                        
+                                        <p >{{items.title}}</p>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -86,10 +88,10 @@
             </div>
             <div class="show_menu" @click="menu">点击切换</div>
             <div class="content_right">
-                <div class="detail_cont" v-for="(item,index) in middleData" :style="articleId == index?'display:block':'display:none'">
-                    <div v-for="items in item">
-                        <div class="detail">
-                            <p v-html="items.content"></p>
+                <div class="detail_cont" >
+                    <div>
+                        <div class="detail" >
+                            <p  v-html="contentData.content"></p>    
                         </div>
                     </div>
                 </div>
@@ -97,48 +99,7 @@
         </div>
     </div>
 </div>
-<div class="footer" style="margin-top:1rem;">
-    <div class="contain">
-        <div class="footer_top">
-            <div class="footer_top_left">
-                <a>首页</a><a>关于天度云</a><a>解决方案</a><a>项目案例</a><a>销售租赁</a><a>数据中心</a><a>技术培训</a><a>资讯动态</a>
-            </div>
-            <div class="footer_top_right">
-                <div class="contact_method">
-                    <a>
-                        <img src="images/email.png"/>
-                    </a>
-                </div>
-                <div class="contact_method">
-                    <a>
-                        <img src="images/QQ.png"/>
-                    </a>
-                </div>
-                <div class="contact_method">
-                    <a>
-                        <img src="images/weibo.png"/>
-                    </a>
-                </div>
-                <div class="contact_method">
-                    <a>
-                        <img src="images/wx_icon.png"/>
-                    </a>
-                </div>
-            </div>
-        </div>
-        <div class="footer_bottom">
-             <div class="footer_bottom_left">
-                <h2 class="color1">陕西天度云激光科技有限公司 </h2>
-                <p class="hot_phone color1" style="font-size:0.24rem;color:#fff;">热线电话：029-85129741</p>
-                <p>Copyright@2008-2016 xxxxxx公司 版权所有 闽ICP备10000000</p>
-                <p>网络文化经营许可证：10000000</p>
-             </div>
-             <div class="footer_bottom_right">
-                <img src="images/qrcode.jpg">
-                <img src="images/qrcode.jpg">
-             </div>
-        </div>
-    </div>
+<div class="footer">
 </div>
 <script type="text/javascript" src="js/jquery-2.1.4.min.js"></script>
 <script type="text/javascript " src="js/bootstrap.js"></script>
@@ -148,6 +109,8 @@ var app = new Vue({
     el: '#app',
     data: function() {
         return {
+            art_id:0,
+            is_show:false;
             menu_id:0,
             is_menu:false,
             is_menus:false,
@@ -159,7 +122,6 @@ var app = new Vue({
             },
             searchItem:{ 
                 thirdapp_id: 21,
-               // menu_id:5,
             },
             pageArray: [],
             allPages: 0,
@@ -168,10 +130,10 @@ var app = new Vue({
             titleData:[],
             mainData:[],
             secondData:[],
-            middleData:[],
             currentId:999,
-            tabId:false,
+            labelIndex:0,
             articleId:0,
+            contentData:{}
         }
     },
     created () {
@@ -179,39 +141,70 @@ var app = new Vue({
         self.getLabelData();
     },
     methods:{
+        chooseArticle(obj){
+            const self = this;
+            console.log(6666)
+            console.log('chooseArticle',obj)
+            self.contentData = obj;
+        },
         getLabelData(){
             var self = this;
+            var urlId = window.base.GetRequest().id;
             var postData = {};
                postData.searchItem = {
                   thirdapp_id:2,
                   type:1,
+                  title:'技术培训'
                 };
+                postData.order = {
+                    listorder:'desc'
+                }
                 postData.getAfter={
-                  article:{
-                    tableName:'article',
+                  childLabel:{
+                    tableName:'label',
                     middleKey:'id',
-                    key:'menu_id',
+                    key:'parentid',
                     condition:'in'
                   }
                 };
             
             var  callback = function(res){
-                    self.menuData = res.info.data;
-                    self.labelData = window.base.findKeyFromArray(self.menuData,'title','导航')[0]; 
-                    console.log('labelData',self.labelData);
-                    if(self.labelData.child.length>0){
-                     self.secondData = window.base.findKeyFromArray(self.labelData.child,'title','技术培训')[0]; 
-                     console.log('secondData',self.secondData);
-                         if(self.secondData.child.length>0){
-                            for(var i=0;i<self.secondData.child.length;i++){
-                               self.middleData.push(self.secondData.child[i].article) ;
-                               console.log('middleData',self.middleData);
-                            }
+                    if(res.info.data.length>0){
+                        self.secondData = res.info.data[0];
+                    };
+                    console.log('secondData',self.secondData);
+                    self.secondData.childLabel = self.secondData.childLabel.reverse();
+                     if(urlId){
+                            self.menu_id = urlId;
+                        }else{
+                            self.menu_id = self.secondData.childLabel[0].id;
                         }
-                    }
-                   
+                    self.getMainData();
+                    console.log('getLabelData',self.secondData)
+                    console.log('getLabelData',self.contentData)
                 };
             window.base.labelGet(postData, callback);
+        },
+        getMainData(){
+            const  self = this;
+            self.mainData = [];
+            var postData = {};
+            
+            postData.paginate = window.base.cloneForm(self.paginate);
+            postData.searchItem = {
+              menu_id:self.menu_id
+            };
+            var callback = (res) => {
+                
+                if(res.info.data.length>0){
+                    self.mainData = res.info.data;
+                    if(JSON.stringify(self.contentData)=='{}'){
+                        self.contentData = self.mainData[0];
+                    };
+                };
+                console.log('self.mainData', self.mainData);
+            };
+            window.base.articleList(postData, callback);
         },
     
             changePage(e) {
@@ -225,10 +218,14 @@ var app = new Vue({
                 self.articleId = articleId;
                 console.log('articleId',self.articleId)
             },
-            tab(index){
+            tab(id){
                 var self =this;
-                self.tabId = index;  
-                console.log('dataSet',self.tabId);      
+                if(id!=self.menu_id){
+                    self.menu_id = id;
+                    self.is_show != self.is_show;
+                    console.log('menu_id',self.menu_id)
+                    self.getMainData()
+                };
             },
         menu:function(e){
             var self = this;
@@ -242,6 +239,7 @@ var app = new Vue({
 });
 $(function(){
         $('.header').load('./header.html');
+        $('.footer').load('./footer.html');
 });
 </script>
 <script>

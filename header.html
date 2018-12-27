@@ -48,16 +48,19 @@
              </div>
              <div class="navigation_right" id="computer">
                  <ul class="navigate">
-                   <li  v-for="(item,index) in menuData"   @mouseover="menuShow(item.id)">
-                        <a href="javascript:void(0);" @click="intoPath(item.url)">{{item.title}}</a>
-                        <div class="second_menu"  :class="(menu_id==item.id?'after1':'orgin1')" >
+                   <li  v-for="(item,index) in menuData" @mouseout="menuHide"   @mouseover="menuShow(item.id)">
+                        <a href="javascript:void(0);" :style="hrefData==item.url?'color:#eb3434;border-bottom:solid 1px #eb3434':''" @click="intoPath(item.url)">{{item.title}}</a>
+                        <div v-if="item.title!='联系我们'&&item.title!='首页'" class="second_menu"  :class="(menu_id==item.id?'after1':'orgin1')" >
                             <div class="contain" v-if="item.child">
                                 <a  v-for="(child_item,index) in item.child"  
-                                 :data-id="index" :data-url="child_item.url" @click="secondPath">{{child_item.title}}</a>
+                                 :data-id="child_item.id" :data-url="child_item.url" @click="secondPath">{{child_item.title}}</a>
                             </div>
                             <div class="contain" v-else>
-                                <a  v-for="(child_item,index) in item.article"  
-                                 :data-id="index" :data-url="child_item.description" @click="secondPath">{{child_item.title}}</a>
+                                <a  
+                                v-for="(child_item,index) in item.article"
+                                 :data-id="child_item.id" :data-url="item.url" @click="secondPath">
+                                    {{child_item.title}}
+                                </a>
                             </div>
                         </div>
                     </li>
@@ -66,12 +69,16 @@
              </div>
              <div class="navigation_right orgin" :class="(is_toggle?'after':'')" id="phone">
                  <ul class="navigate">
-                    <li  v-for="(item,index) in mainData">
-                        <a href="javascript:void(0);" @click="menuPhone(item.id)">{{item.title}}</a>
-                        <div class="second_menu_phone" :class="(currentId1 ==item.id?'after_phone':'orgin_phone')">
-                            <div class="contain">
-                                <a  v-for="(child_item,index) in item.article"  
-                                 :data-id="index" :data-url="child_item.url">{{child_item.title}}</a>
+                    <li  v-for="(item,index) in menuData">
+                        <a href="javascript:void(0);" @click="menuPhone(item.id,item.title)">{{item.title}}</a>
+                        <div class="second_menu_phone" v-if="item.title!='联系我们'&&item.title!='首页'" :class="(currentId1 ==item.id?'after_phone':'orgin_phone')">
+                            <div class="contain" v-if="item.child">
+                                <a  v-for="(child_item,index) in item.child"  
+                                 :data-id="index" :data-url="child_item.url" @click="secondPath">{{child_item.title}}</a>
+                            </div>
+                            <div class="contain" v-else>
+                                <a  v-for="(child_item,index) in item.article" 
+                                 :data-id="index" :data-url="child_item.description" @click="secondPath">{{child_item.title}}</a>
                             </div>
                         </div>
                     </li>
@@ -83,8 +90,6 @@
 </div>
 <script type="text/javascript" src="js/jquery-2.1.4.min.js"></script>
 <script type="text/javascript " src="js/bootstrap.js"></script>
-
-
 <script src="js/rem.js"></script>
 <script type="text/javascript">
 var app = new Vue({
@@ -98,10 +103,13 @@ var app = new Vue({
             mainData:[],
             articleData:[],
             currentId1:0,
+            hrefData:''
         }
     },
     created () {
         const self = this;
+        self.hrefData = location.href.substring(28).split('?')[0];
+        console.log(self.hrefData);
         self.getMainData();
     },
     methods:{
@@ -120,7 +128,10 @@ var app = new Vue({
                 tableName:'article',
                 middleKey:'id',
                 key:'menu_id',
-                condition:'in'
+                condition:'in',
+                searchItem:{
+                    status:1,
+                }
               }
             };
             var  callback = function(res){
@@ -129,7 +140,6 @@ var app = new Vue({
                 if(self.menu.length>0){
                     self.menuData = window.base.findKeyFromArray(self.menu,'title','导航')[0].child;
                     console.log('menuData',self.menuData)
-
                 }
             };
             window.base.labelGet(postData, callback);
@@ -148,19 +158,27 @@ var app = new Vue({
             const self =this;                              
             self.menu_id = 0;                  
         },
-        menuPhone: function(id) {
+        menuPhone: function(id,title) {
             const self =this;
             var currentId = id;
+            var currentTitle = title;
             if(currentId){
                self.currentId1 = currentId;  
             }else{
                 return  
-            }        
+            }     
+
+            if(title=='首页'){
+                window.location.href="http://www.tianduclouds.com"
+            }else if(title == '联系我们'){
+                window.location.href="http://www.tianduclouds.com/contact.html"
+            }
                      
         },
         toggleMenu:function(e){
             const self = this;
             self.is_toggle = !self.is_toggle;
+            self.currentId1 = 999;
         },
         intoPath(urls){
             const self = this;

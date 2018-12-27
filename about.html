@@ -14,7 +14,7 @@
 <link href="css/style.css" rel="stylesheet" type="text/css"/>
 <link href="css/responsive.css" rel="stylesheet" type="text/css"/>
 <link href="css/bootstrap.css" rel="stylesheet" type="text/css" media="all" />
-<!-- <link href="css/animate.css" rel="stylesheet" type="text/css" media="all" /> -->
+<link href="css/wxParse.css" rel="stylesheet"/>
 <link href="css/font-awesome.min.css" rel="stylesheet">
 <script src="js/browser.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
@@ -62,8 +62,8 @@
                         <li class="list_li" style="height:0.2rem;">
                             <span></span><a></a>
                         </li>
-                        <li v-for="(item,index) in mainData" :data-id="item.id" @click="changeMenu(index)">
-                            <span :style="currentId == index?'display:block':'display:none'" >
+                        <li v-for="(item,index) in mainData" :data-id="item.id" @click="changeMenu(item.id)">
+                            <span :style="currentId == item.id?'display:block':'display:none'" >
                             </span>
                             <a ><p >{{item.title}}</p></a></li>
                        
@@ -72,14 +72,13 @@
             </div>
             <div class="show_menu" @click="menu">点击切换</div>
             <div class="content_right" >
-                <div class="detail_cont" v-for="(item,index) in mainData" :style="currentId == index?'display:block':'display:none'">
+                <div class="detail_cont" v-for="(item,index) in mainData" :style="currentId == item.id?'display:block':'display:none'">
                     <div class="companny_tlt">
                         <h2>{{item.title}}</h2>
                         <img src="images/tlt_bg.png"/>
                     </div>
                     <div class="detail">
                         <p v-html="item.content"></p>
-                        
                     </div>
                 </div>
             </div>
@@ -100,16 +99,6 @@ var app = new Vue({
         return {
             menu_id:0,
             is_menu:false,
-            paginate: { 
-                    count: 0, 
-                    currentPage: 1, 
-                    pagesize:9, 
-                    is_page: true, 
-            },
-            searchItem:{ 
-                thirdapp_id: 21,
-               // menu_id:5,
-            },
             pageArray: [],
             allPages: 0,
             menuData:[],
@@ -122,8 +111,8 @@ var app = new Vue({
     },
     created () {
         const self = this;
-        self.getMainData();
         self.getLabelData();
+        self.getMainData();
     },
     methods:{
         getLabelData(){
@@ -131,33 +120,45 @@ var app = new Vue({
             const postData = {};
             postData.searchItem = {
               thirdapp_id:2,
-              type:1,
+              status:1,
+            };
+            postData.getBefore = {
+              aboutData:{
+                tableName:'label',
+                searchItem:{
+                  title:['=',['关于天度云']],
+                },
+                middleKey:'menu_id',
+                key:'id',
+                condition:'in',
+              },
             };
             const callback = (res)=>{
               if(res.info.data.length>0){
-                self.labelData.push.apply(self.labelData,res.info.data);
-                 self.menuData = window.base.findKeyFromArray(self.labelData,'title','导航')[0];
-                 if(self.menuData.child.length>0){
-                    self.secondData = window.base.findKeyFromArray(self.menuData.child,'title','关于天度云')[0]
-                 }
+                 self.mainData = res.info.data;
               }
+              self.getMainData();
             };
             window.base.labelGet(postData,callback); 
         },
         getMainData(){
             var self = this;
             var urlId = window.base.GetRequest().id;
-            if(urlId){
-                self.currentId = urlId;
-            }
             var postData = {};
-            postData.paginate = window.base.cloneForm(self.paginate);
             postData.searchItem = {
               thirdapp_id:2,
               menu_id:2
             };
+            postData.order={
+              listorder:'desc'
+            }
             var callback = (res) => {
                 self.mainData = res.info.data;
+                if(urlId){
+                    self.currentId = urlId;
+                }else{
+                    self.currentId = self.mainData[0].id
+                }
             };
             window.base.articleList(postData, callback);
         },
@@ -169,7 +170,6 @@ var app = new Vue({
         changeMenu(index) {
             var self = this;
             var id = index;
-            console.log(333,id);
             self.currentId = id;
         },
         menu:function(e){

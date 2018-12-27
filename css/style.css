@@ -96,7 +96,7 @@ input,textarea {outline: none; -webkit-box-shadow: none; box-shadow: none;-webki
     cursor: pointer;
 }
 .fenye a:hover,.fenye a.active{
-    background: #089fe3;
+    background: #eb3434;
     color: #fff;
 }
 #customize1{
@@ -438,6 +438,10 @@ input,textarea {outline: none; -webkit-box-shadow: none; box-shadow: none;-webki
     color: #4a4a4a;
     font-size: 0.16rem;
 }
+.navigate li>a:hover{
+    color:rgb(235, 52, 52);
+    text-decoration:none;
+}
 .navigate li .active{
     color:#eb3434;
     border-bottom: solid 2px #eb3434;
@@ -478,12 +482,17 @@ input,textarea {outline: none; -webkit-box-shadow: none; box-shadow: none;-webki
     width:11%;
     font-size:0.14rem;
     color:#fff;
-    height:0.6rem;
-    line-height:0.6rem;
+    height:0.4rem;
+    line-height:0.4rem;
+    display:inline-block;
+    margin:0;
+}
+.second_menu a:hover{
+    color:#fff;
 }
 .second_menu .contain{
     flex-wrap: wrap;
-    height:90%;
+    height:100%;
 }
 @keyframes opacity_menu{
     0%{
@@ -498,7 +507,7 @@ input,textarea {outline: none; -webkit-box-shadow: none; box-shadow: none;-webki
 }
 .after1{
     display:block;
-    height:150%;
+    height:120%;
 }
 .before1{
     display:none;
@@ -520,6 +529,7 @@ input,textarea {outline: none; -webkit-box-shadow: none; box-shadow: none;-webki
 .banner2{
     position:relative;
     top:1rem;
+    min-height:4rem;
 }
 
 .banner_top{
@@ -641,7 +651,7 @@ input,textarea {outline: none; -webkit-box-shadow: none; box-shadow: none;-webki
 .service{
     width:100%;
     height:5.36rem;
-    background: url(../images/service.jpg) no-repeat;
+    background: url(../images/service.jpg) center center no-repeat;
     background-size:cover;
     margin-top: 1.7rem;
     overflow: hidden;
@@ -706,6 +716,10 @@ input,textarea {outline: none; -webkit-box-shadow: none; box-shadow: none;-webki
     line-height:0.8rem;
     float:left;
 }
+.cooper_item img{
+    width:100%;
+    height:100%;
+}
 .left_click img{
     width:0.16rem;
     height:0.2rem;
@@ -730,7 +744,7 @@ input,textarea {outline: none; -webkit-box-shadow: none; box-shadow: none;-webki
 .footer{
     width:100%;
     height:2.9rem;
-    background: url(../images/footer.jpg) no-repeat;
+    background: url(../images/footer.jpg) center center no-repeat;
     background-size:cover;
     overflow: hidden;
 }
@@ -861,6 +875,7 @@ input,textarea {outline: none; -webkit-box-shadow: none; box-shadow: none;-webki
 .list_menu{
     width:95%;
     margin-left:5%;
+    transition:all 1s;
 }
 .list_menu li{
     height:0.56rem;
@@ -880,7 +895,8 @@ input,textarea {outline: none; -webkit-box-shadow: none; box-shadow: none;-webki
     background:#fff;
     display:inline-block;
     float:right;
-     border-bottom:solid 1px #e0e0e0;
+    border-bottom:solid 1px #e0e0e0;
+    text-decoration:none;
 }
 .list_menu li a p{
     margin-left:0.4rem;
@@ -890,20 +906,24 @@ input,textarea {outline: none; -webkit-box-shadow: none; box-shadow: none;-webki
 }
 .detail{
     width:100%;
-    text-align:center;
+    overflow:hidden;
 }
 .detail p{
     font-size:0.14rem;
     color:#666;
 }
 .detail img{
-    width:6.56rem;
-    height:4rem;
+    width:100%;
+    height:100%;
     margin:0.2rem auto;
 }
 .detail_cont{
     width:94%;
+    min-height:8rem;
     margin:0 auto;
+}
+.detail_cont p img{
+    margin:0.2rem auto;
 }
 .content_right .companny_tlt{
     margin-bottom:0.3rem;
@@ -916,12 +936,12 @@ input,textarea {outline: none; -webkit-box-shadow: none; box-shadow: none;-webki
 }
 .show_menu{
     width:3rem;
-    height:0.8rem;
+    height:1.05rem;
     background:#eb3434;
     border-radius:0 0.3rem 0.3rem 0;
     text-align: center;
-    line-height:0.8rem; 
-    font-size:0.16rem;
+    line-height:1.05rem; 
+    font-size:0.36rem;
     color:#fff;
     display:none;
 }
@@ -1164,4 +1184,23 @@ input,textarea {outline: none; -webkit-box-shadow: none; box-shadow: none;-webki
 }
 .information_P p{
     height:0.36rem;
+}
+.chooesd{
+    width:100%;
+    height:100%;
+    box-sizing: border-box;
+    border-left:solid 1px #eb3434;
+}
+.blank{
+    margin-top:1rem;
+    text-align: center;
+}
+.blank img{
+    width:4.6rem;
+    height:3.5rem;
+    margin:0 auto;
+}
+.consult a{
+    width:100%;
+    height:100%;
 }

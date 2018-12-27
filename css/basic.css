@@ -80,7 +80,7 @@ input,textarea {outline: none; -webkit-box-shadow: none; box-shadow: none;-webki
 	display: inline-block;
 	border:1px #ddd solid;
 	margin-right:3px;
-	
+	border-radius:0.1rem;
 }
 .fenye span{
 	font-size: 0.2rem;
@@ -91,12 +91,13 @@ input,textarea {outline: none; -webkit-box-shadow: none; box-shadow: none;-webki
 	padding: 0.1rem 0.2rem;
 	outline: none;
 	border:1px #aaa solid !important;
+	border-radius:0.1rem;
 }
 .fenye a:hover,.fenye span:hover{
 	cursor: pointer;
 }
 .fenye a:hover,.fenye a.active{
-	background: #089fe3;
+	background: #eb3434;
 	color: #fff;
 }
 #customize1{

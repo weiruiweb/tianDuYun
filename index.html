@@ -14,8 +14,7 @@
 <link href="css/basic.css" rel="stylesheet" type="text/css"/>
 <link href="css/style.css" rel="stylesheet" type="text/css"/>
 <link href="css/responsive.css" rel="stylesheet" type="text/css"/>
-
-<!-- <link href="css/animate.css" rel="stylesheet" type="text/css" media="all" /> -->
+<link href="css/wxParse.css" rel="stylesheet"/>
 <link href="css/font-awesome.min.css" rel="stylesheet">
 <script src="js/browser.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
@@ -111,51 +110,18 @@
     </div>
 </div>
 <div class="consult">
-    <img src="images/consult.png"/>
+    <a href="tel:18192654258">
+        <img src="images/consult.png"/>
+    </a>
 </div>
 <div id="dituContent"></div>
 <div class="footer">
-    <div class="contain">
-        <div class="footer_top">
-            <div class="footer_top_left">
-                <a href="http://www.tianduclouds.com/index.html">首页</a><a href="http://www.tianduclouds.com/about.html">关于天度云</a><a href="http://www.tianduclouds.com/solution.html">解决方案</a><a href="http://www.tianduclouds.com/case.html">项目案例</a><a href="http://www.tianduclouds.com/sell.html">销售租赁</a><a href="http://www.tianduclouds.com/data.html">数据中心</a><a href="http://www.tianduclouds.com/train.html">技术培训</a><a href="http://www.tianduclouds.com/information.html">资讯动态</a>
-            </div>
-            <div class="footer_top_right">
-                <div class="contact_method">
-                    <a>
-                        <img src="images/email.png"/>
-                    </a>
-                </div>
-                <div class="contact_method">
-                    <a>
-                        <img src="images/QQ.png"/>
-                    </a>
-                </div>
-                <div class="contact_method">
-                    <a>
-                        <img src="images/weibo.png"/>
-                    </a>
-                </div>
-                <div class="contact_method">
-                    <a>
-                        <img src="images/wx_icon.png"/>
-                    </a>
-                </div>
-            </div>
-        </div>
-        <div class="footer_bottom">
-             <div class="footer_bottom_left">
-                <h2 class="color1">陕西天度云激光科技有限公司 </h2>
-                <p class="hot_phone color1" style="font-size:0.24rem;color:#fff;">热线电话：029-85129741</p>
-                <p>Copyright@2008-2016 xxxxxx公司 版权所有 闽ICP备10000000</p>
-                <p>网络文化经营许可证：10000000</p>
-             </div>
-             <div class="footer_bottom_right">
-                <img src="images/qrcode.jpg">
-                <img src="images/qrcode.jpg">
-             </div>
-        </div>
-    </div>
+</div>
+<div id="loader-wrapper">
+    <div id="loader"></div>
+    <div class="loader-section section-left"></div>
+    <div class="loader-section section-right"></div>
+    <div class="load_title">高联建设<br></div>
 </div>
 <style type="text/css">
     html,body{margin:0;padding:0;}
@@ -293,10 +259,8 @@ var app = new Vue({
               thirdapp_id:2
             };
             const callback = (res)=>{ 
-              console.log(1000,res.info.data.length);
               if(res.info.data.length>0){
                self.sliderData = res.info.data[0].mainImg;
-               console.log(1333,self.sliderData)
               }
             };
             window.base.labelGet(postData,callback);
@@ -308,7 +272,7 @@ var app = new Vue({
                       thirdapp_id:2,
                       type:1,
                     };
-                    order:{
+                    postData.order={
                       listorder:'desc'
                     }
                 
@@ -357,8 +321,7 @@ var app = new Vue({
             var dataSet = window.base.getDataSet(e);
             if(dataSet.id){
                    self.menu_id = dataSet.id;  
-                }           
-            console.log('dataSet',dataSet.id);          
+                }                   
         },
         menuHide: function(e) {
             const self =this;                              
@@ -366,12 +329,10 @@ var app = new Vue({
         },
         menuShow1: function(e) {
             const self =this;
-            console.log(e);
             var dataSet = window.base.getDataSet(e);
             if(dataSet.id){
                    self.menu_id = dataSet.id;  
-                }           
-            console.log('dataSet',dataSet.id);          
+                }                  
         },
         toggleMenu:function(e){
             const self = this;
@@ -388,6 +349,7 @@ var app = new Vue({
 });
  $(function(){
         $('.header').load('./header.html');
+        $('.footer').load('./footer.html');
     });
 </script>
 <script>
