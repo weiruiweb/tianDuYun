@@ -560,13 +560,6 @@ input,textarea {outline: none; -webkit-box-shadow: none; box-shadow: none;-webki
 .banner_img{
     min-height: 6rem;
 }
-
-.carousel-indicators li {
-    margin:0 0.1rem;
-}
-.carousel-indicators .active{
-    margin:0 0.1rem;
-}
 /***********************关于天度云**************************/
 .companny{
     padding-top:0.7rem;
@@ -681,6 +674,7 @@ input,textarea {outline: none; -webkit-box-shadow: none; box-shadow: none;-webki
 .cooper{
     margin-top:0.7rem;
     overflow: hidden;
+    min-height:3.7rem;
 }
 .cooper_tlt{
     width:100%;
@@ -696,6 +690,8 @@ input,textarea {outline: none; -webkit-box-shadow: none; box-shadow: none;-webki
 }
 .cooper_cont{
     width:100%;
+    overflow: hidden;
+    min-height:1.84rem;
 }
 .left_click{
     width:4%;
@@ -706,6 +702,27 @@ input,textarea {outline: none; -webkit-box-shadow: none; box-shadow: none;-webki
 .cooper_center{
     width:92%;
     float:left;
+    min-height:1.84rem;
+    overflow: hidden;
+    transition:all 1s;
+    -webkit-transition:all 1s;
+    animation: cooper_opacity 1s;
+}
+@keyframes cooper_opacity{
+    0%{
+        opacity:0;
+    }
+    100%{
+        opacity:1;
+    }
+}
+@-webkit-keyframes cooper_opacity{
+    0%{
+        opacity:0;
+    }
+    100%{
+        opacity:1;
+    }
 }
 .cooper_item{
     width:23%;
@@ -731,19 +748,54 @@ input,textarea {outline: none; -webkit-box-shadow: none; box-shadow: none;-webki
 }
 .consult{
     width:2.56rem;
-    height:1.16rem;
+    height:auto;
     position: fixed;
     right:0;
-    bottom:1rem;
+    top:60%;
     z-index:999;
 }
-.consult img{
+.consult_cont{
+    position:relative;
     width:100%;
     height:100%;
 }
+.contact_cont1{
+    width:70%;
+    height:0;
+    box-shadow:0 0 20px #eee;
+    position:absolute;
+    right:0;
+    top:1.16rem;
+    z-index:999;
+    overflow: hidden;
+    height:0;
+    text-align: center;
+    padding-top:0.3rem;
+    transition: all 0.5s;
+    -webkit-transition:all 0.5s;
+    opacity:0;
+    border-radius:0 0 0.2rem 0.2rem;
+    background:#fff;
+}
+.consult img{
+    width:100%;
+    height:1.16rem;
+}
+.contact_show{
+    height:1.2rem;
+    opacity:1;
+}
+.contact_hide{
+    height:0;
+    opacity:0;
+    overflow: hidden;
+}
+.contact_cont1 p{
+    font-size:0.16rem;
+}
 .footer{
     width:100%;
-    height:2.9rem;
+    height:3.1rem;
     background: url(../images/footer.jpg) center center no-repeat;
     background-size:cover;
     overflow: hidden;
@@ -970,6 +1022,11 @@ input,textarea {outline: none; -webkit-box-shadow: none; box-shadow: none;-webki
     height:0.3rem;
     line-height:0.3rem;
     margin:0;
+    overflow : hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
 }
 .case_right p{
     font-size:0.14rem;

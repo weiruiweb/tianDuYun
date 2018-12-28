@@ -60,7 +60,7 @@
                             <span></span><a></a>
                         </li>
                         <li v-for="(item,index) in menuData" :data-id="item.id" @click="changeMenu">
-                            <span :style="art_id == item.id?'display:block':'display:none'" :data-id="item.id" @click="changeMenu"></span>
+                            <span :style="is_select == item.id?'display:block':'display:none'" :data-id="item.id" @click="changeMenu"></span>
                             <a :data-id="item.id" @click="changeMenu">
                                 <p :data-id="item.id" @click="changeMenu">{{item.title}}</p></a></li>
                        
@@ -123,6 +123,7 @@ var app = new Vue({
             art_id:0,
             menu_id:0,
             is_menu:false,
+            is_select:0,
             paginate: { 
                     count: 0, 
                     currentPage: 1, 
@@ -141,7 +142,8 @@ var app = new Vue({
             mainData:[],
             secondData:[],
             contentType:'list',
-            contentData:{}
+            contentData:{},
+            idArray:[]
         }
     },
     created () {
@@ -169,36 +171,38 @@ var app = new Vue({
                       },
                   };
             var  callback = function(res){
-                self.menuData = res.info.data;
                 self.titleData = res.info.data[0];
                 self.menuData = res.info.data[0].labelChild;
-                console.log('menuData',self.menuData);
+                for (var i = 0; i < self.menuData.length; i++) {
+                    self.idArray.push(self.menuData[i].id)
+                };
+                self.is_select = window.base.GetRequest().id;
+                if(window.base.GetRequest().id){
+                self.searchItem.menu_id = ['in',[window.base.GetRequest().id]]
+                }else{
+                    self.searchItem.menu_id = ['in',self.idArray];   
+                };
+                
+                console.log('idArray',self.idArray);
                 self.getMainData();
             };
             window.base.labelGet(postData, callback);
         },
+
         getMainData(id){
                 var self = this;
                 var postData = {};
                 self.art_id = window.base.GetRequest().id;
                 postData.paginate = window.base.cloneForm(self.paginate);
-                postData.searchItem = {
-                  thirdapp_id:2
-                };
-                if(id){ 
-                    postData.searchItem.menu_id = id; 
-                }else{ 
-                    postData.searchItem.menu_id = self.art_id; 
-                };
+                postData.searchItem = window.base.cloneForm(self.searchItem)
                 var callback = (res) => {
-                    console.log('getMainData', res);
                     self.mainData = res.info.data;
-                    console.log('mainData',self.mainData);
                     self.paginate['count'] = res.info.total;
                     window.base.computePageArr(self);
                 };
                 window.base.articleList(postData, callback);
             },
+
             getArticle(index){
                 const self = this;
                 self.contentType = 'content';
@@ -214,8 +218,9 @@ var app = new Vue({
                 var self = this;
                 self.paginate = { count: 0, currentPage: 1, pagesize: 6, is_page: true, };
                 var id = window.base.getDataSet(e).id;
-                self.getMainData(id);
-                self.art_id = id;
+                self.is_select = id;
+                self.searchItem.menu_id = ['in',[id]]
+                self.getMainData();
                 self.contentType = 'list';
             },
             linkTo(e) {

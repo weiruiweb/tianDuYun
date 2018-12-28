@@ -35,6 +35,12 @@
  </style>
 <![endif]-->
 <style>
+    .carousel-indicators li {
+        margin:0 10px;
+    }
+    .carousel-indicators .active{
+        margin:0 10px;
+    }
 </style>
 </head>
 <body style="background:#fff;">
@@ -74,7 +80,7 @@
     <div class="service">
         <div class="contain">
             <div class="companny_tlt">
-                <h2 class="color">服务范围</h2>
+                <h2 class="color">服务领域</h2>
                 <img src="images/tlt_bg.png"/>
                 <p style="color:#fff">service</p>
             </div>
@@ -108,20 +114,22 @@
             </div>
         </div>
     </div>
+    <div class="consult" @click="contact">
+        <div class="consult_cont">
+            <a>
+                <img src="images/consult.png"/>
+            </a>
+            <div class="contact_cont1" :class="contact_show?'contact_show':'contact_hide'">
+                <p class="color3">联系电话:{{contactData.contactPhone}}</p>
+                <p class="color3">Email:{{contactData.description}}</p>
+            </div>
+        </div>
+    </div>
 </div>
-<div class="consult">
-    <a href="tel:18192654258">
-        <img src="images/consult.png"/>
-    </a>
-</div>
+
+
 <div id="dituContent"></div>
 <div class="footer">
-</div>
-<div id="loader-wrapper">
-    <div id="loader"></div>
-    <div class="loader-section section-left"></div>
-    <div class="loader-section section-right"></div>
-    <div class="load_title">高联建设<br></div>
 </div>
 <style type="text/css">
     html,body{margin:0;padding:0;}
@@ -141,7 +149,7 @@
     
     function createMap(){
         var map = new BMap.Map("dituContent");
-        var point = new BMap.Point(108.899556,34.243055);
+        var point = new BMap.Point(108.955322,34.328527);
         map.centerAndZoom(point,17);
         window.map = map;
     }
@@ -162,7 +170,7 @@
     map.addControl(ctrl_sca);
     }
 
-    var markerArr = [{title:"陕西省西安市雁塔区科技路高新大都荟A座7号楼2007",content:"电话:029-89569644",point:"108.901381|34.2428",isOpen:0,icon:{w:23,h:25,l:46,t:21,x:9,lb:12}}
+    var markerArr = [{title:"陕西省西安市未央区未央路149号银河华庭D座2607",content:"电话:029-89569644",point:"108.955322|34.328527",isOpen:0,icon:{w:23,h:25,l:46,t:21,x:9,lb:12}}
          ];
     function addMarker(){
         for(var i=0;i<markerArr.length;i++){
@@ -234,16 +242,22 @@ var app = new Vue({
             serviceData:[],
             cooperData:[],
             cooperStart:0,
-            web_cooperData:[]
+            web_cooperData:[],
+            contactData:[],
+            contact_show:false,
         }
     },
     created () {
         const self = this;
         self.getSliderData();
         self.getAboutData();
+        self.getContact();
+        
+        setInterval(function(){
+            self.cooper_click(8,self.cooperData.child[0].mainImg,'add')
+        }, 3000);
     },
     methods:{
-
         cooper_click(standard,array,type){
             const self = this;
             var res = window.base.jsTurn(self.cooperStart,standard,array,type);
@@ -264,6 +278,32 @@ var app = new Vue({
               }
             };
             window.base.labelGet(postData,callback);
+          },
+          getContact(){
+            const self = this;
+            const postData = {};
+            postData.searchItem = {
+              thirdapp_id:2
+            };
+            postData.getBefore = {
+              aboutData:{
+                tableName:'label',
+                searchItem:{
+                  title:['=',['客服']],
+                },
+                middleKey:'menu_id',
+                key:'id',
+                condition:'in',
+              },
+            };
+
+            const callback = (res)=>{ 
+              if(res.info.data.length>0){
+               self.contactData = res.info.data[0];
+              }
+              console.log('contactData',self.contactData);
+            };
+            window.base.articleList(postData,callback);
           },
           getAboutData(){
              var self = this;
@@ -315,6 +355,7 @@ var app = new Vue({
                 };
                 window.base.labelGet(postData, callback);
           },
+         
         menuShow: function(e) {
             const self =this;
             console.log(e);
@@ -334,6 +375,12 @@ var app = new Vue({
                    self.menu_id = dataSet.id;  
                 }                  
         },
+         contact(){
+            console.log(9999);
+            const self = this;
+            self.contact_show = !self.contact_show;
+            console.log('contact_show',self.contact_show);
+          },
         toggleMenu:function(e){
             const self = this;
             self.is_toggle = !self.is_toggle;

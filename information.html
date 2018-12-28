@@ -59,8 +59,8 @@
                         <li class="list_li" style="height:0.2rem;">
                             <span></span><a></a>
                         </li>
-                        <li v-for="(item,index) in labelData"  :data-id="item.id" @click="changeMenu">
-                            <span :style="art_id == item.id?'display:block':'display:none'" :data-id="item.id" @click="changeMenu"></span>
+                        <li v-for="(item,index) in titleData.child"  :data-id="item.id" @click="changeMenu">
+                            <span :style="currentId == item.id?'display:block':'display:none'" :data-id="item.id" @click="changeMenu"></span>
                             <a :data-id="item.id" @click="changeMenu">
                                 <p :data-id="item.id" @click="changeMenu">{{item.title}}</p></a></li>
                        
@@ -144,6 +144,7 @@ var app = new Vue({
             allPages: 0,
             labelData:[],
             titleData:[],
+            secondData:[],
             mainData:[],
             currentId:999,
             contentType:'list',
@@ -162,24 +163,27 @@ var app = new Vue({
                postData.searchItem = {
                   thirdapp_id:2,
                   type:1,
-                  title:'资讯动态',
                   status:1,
                 };
                 postData.order={
                   listorder:'desc'
                 }
-             postData.getAfter={
-                  labelChild:{
-                    tableName:'label',
-                    middleKey:'id',
-                    key:'parentid',
-                    condition:'in'
-                  },
-              };
+                self.currentId=window.base.GetRequest().id;
             var  callback = function(res){
-                self.titleData = res.info.data[0];
-                self.labelData = res.info.data[0].labelChild;
-                console.log('labelData',self.labelData);
+                self.menuData = res.info.data;
+                if(self.menuData.length>0){
+                 self.labelData = window.base.findKeyFromArray(self.menuData,'title','导航')[0]; 
+                     if(self.labelData.child.length>0){
+                         self.titleData = window.base.findKeyFromArray(self.labelData.child,'title','资讯动态')[0]; 
+         
+                          if(self.titleData.child.length>0){
+                            for(var i=0;i<self.titleData.child.length;i++){
+                                self.secondData.push(self.titleData.child[i].id)
+    
+                            }
+                          }
+                     }
+                }
                 self.getMainData();
             };
             window.base.labelGet(postData, callback);
@@ -196,7 +200,7 @@ var app = new Vue({
                 if(id){ 
                     postData.searchItem.menu_id = id; 
                 }else{ 
-                    postData.searchItem.menu_id = self.art_id; 
+                     postData.searchItem.menu_id = ['in', self.secondData];
                 };
                 var callback = (res) => {
                     console.log('getMainData', res);
@@ -222,7 +226,7 @@ var app = new Vue({
                 self.paginate = { count: 0, currentPage: 1, pagesize: 6, is_page: true, };
                 var id = window.base.getDataSet(e).id;
                 self.getMainData(id);
-                self.art_id = id;
+                self.currentId = id;
                 self.contentType = 'list';
             },
             linkTo(e) {

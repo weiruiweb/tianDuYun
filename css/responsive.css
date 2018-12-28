@@ -303,7 +303,7 @@
 		line-height:0.9rem;
 	}
 	.footer{
-		height:11.6rem;
+		height:13.6rem;
 	}
 	.footer_bottom_left{
     	width:100%;
@@ -346,11 +346,15 @@
 	.content_left{
 		width:4rem;
 		position:fixed;
-		top:10rem;
+		top:3rem;
 		left:-4rem;
+		min-height:12rem;
 	}
 	.show_menu{
 		display: block;
+		position: fixed;
+		left:0;
+		top:2rem;
 	}
 	.case_list{
 	    width:100%;
@@ -362,6 +366,20 @@
 	}
 	.case_right{
 		width:76%;
+	}
+	.case_right h4{
+		font-size:0.4rem;
+		line-height:0.6rem;
+	}
+	.case_right p{
+	    color:#666;
+	    font-size:0.3rem;
+	    line-height:0.6rem;
+	    overflow : hidden;
+	    text-overflow: ellipsis;
+	    display: -webkit-box;
+	    -webkit-line-clamp: 1;
+	    -webkit-box-orient: vertical;
 	}
 	.message input{
 		height:1.2rem;
@@ -445,4 +463,32 @@
 	.detail p{
 		font-size:0.5rem;
 	}
+	.consult{
+		width:5.78rem;
+	}
+	.consult img{
+		height:2.26rem;
+	}
+	.contact_cont1{
+		top:2.26rem;
+	}
+	.contact_show{
+		height:2.28rem;
+	}
+	.contact_cont1{
+		width:100%;
+	}
+	.left_click{
+		height:2.6rem;
+		line-height:2.6rem;
+	}
+	.left_click img{
+		width:100%;
+		height:50%;
+	}
+	.cooper_cont{
+		min-height:3.4rem;
+	}
+
 }
+

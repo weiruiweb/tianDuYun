@@ -72,8 +72,9 @@
                  <div class="footer_bottom_left">
                     <h2 class="color1">{{menu.title}} </h2>
                     <p class="hot_phone color1" style="font-size:0.24rem;color:#fff;">热线电话：{{menu.contactPhone}}</p>
-                    <p>Copyright@2008-2016 xxxxxx公司 版权所有 闽ICP备10000000</p>
-                    <p>网络文化经营许可证：10000000</p>
+                    <p>邮箱：{{menu.description}}</p>
+                    <p v-html="menu.content"></p>
+                    <p>技术支持：西安纯粹科技有限公司</p>
                  </div>
                  <div class="footer_bottom_right">
                     <img  v-for="item in menu.mainImg" :src="item.url">

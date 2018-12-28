@@ -74,11 +74,11 @@
                         <div class="second_menu_phone" v-if="item.title!='联系我们'&&item.title!='首页'" :class="(currentId1 ==item.id?'after_phone':'orgin_phone')">
                             <div class="contain" v-if="item.child">
                                 <a  v-for="(child_item,index) in item.child"  
-                                 :data-id="index" :data-url="child_item.url" @click="secondPath">{{child_item.title}}</a>
+                                 :data-id="child_item.id" :data-url="child_item.url" @click="secondPath">{{child_item.title}}</a>
                             </div>
                             <div class="contain" v-else>
-                                <a  v-for="(child_item,index) in item.article" 
-                                 :data-id="index" :data-url="child_item.description" @click="secondPath">{{child_item.title}}</a>
+                                <a  v-for="(child_item,index) in item.article"
+                                 :data-id="child_item.id" :data-url="item.url" @click="secondPath">{{child_item.title}}</a>
                             </div>
                         </div>
                     </li>
