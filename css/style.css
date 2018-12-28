@@ -949,12 +949,15 @@ input,textarea {outline: none; -webkit-box-shadow: none; box-shadow: none;-webki
     float:right;
     border-bottom:solid 1px #e0e0e0;
     text-decoration:none;
+    overflow:hidden;
 }
 .list_menu li a p{
     margin-left:0.4rem;
     display: inline-block;
     color:#333;
     font-size:0.16rem;
+    overflow:hidden;
+    margin-bottom:0;
 }
 .detail{
     width:100%;
@@ -1036,6 +1039,13 @@ input,textarea {outline: none; -webkit-box-shadow: none; box-shadow: none;-webki
     text-overflow: ellipsis;
     display: -webkit-box;
     -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+}
+.list_two p{
+    overflow : hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
     -webkit-box-orient: vertical;
 }
 .case_item{

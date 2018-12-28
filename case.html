@@ -216,7 +216,7 @@ var app = new Vue({
             },
             changeMenu(e) {
                 var self = this;
-                self.paginate = { count: 0, currentPage: 1, pagesize: 6, is_page: true, };
+                self.paginate = { count: 0, currentPage: 1, pagesize: 8, is_page: true, };
                 var id = window.base.getDataSet(e).id;
                 self.is_select = id;
                 self.searchItem.menu_id = ['in',[id]]

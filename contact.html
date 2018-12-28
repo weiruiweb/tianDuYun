@@ -114,12 +114,19 @@
             </div>
         </div>
     </div>
+    <div class="consult" @click="contact">
+        <div class="consult_cont">
+            <a>
+                <img src="images/consult.png"/>
+            </a>
+            <div class="contact_cont1" :class="contact_show?'contact_show':'contact_hide'">
+                <p class="color3">联系电话:{{contactData.contactPhone}}</p>
+                <p class="color3">Email:{{contactData.description}}</p>
+            </div>
+        </div>
+    </div>
 </div>
-<div class="consult">
-    <a href="tel:18192654258">
-        <img src="images/consult.png"/>
-    </a>
-</div>
+
 <div class="footer">
 </div>
 <style type="text/css">
@@ -356,10 +363,13 @@ var app = new Vue({
                 content:'',
                 passage1:''
             },
+            contactData:[],
+            contact_show:false,
         }
     },
     created () {
         const self = this;
+        self.getContact();
         },
 
     methods:{
@@ -395,8 +405,38 @@ var app = new Vue({
             };
             window.base.messageAdd(postData,callback);
         },
-       
-      
+        getContact(){
+            const self = this;
+            const postData = {};
+            postData.searchItem = {
+              thirdapp_id:2
+            };
+            postData.getBefore = {
+              aboutData:{
+                tableName:'label',
+                searchItem:{
+                  title:['=',['客服']],
+                },
+                middleKey:'menu_id',
+                key:'id',
+                condition:'in',
+              },
+            };
+
+            const callback = (res)=>{ 
+              if(res.info.data.length>0){
+               self.contactData = res.info.data[0];
+              }
+              console.log('contactData',self.contactData);
+            };
+            window.base.articleList(postData,callback);
+          },
+        contact(){
+            console.log(9999);
+            const self = this;
+            self.contact_show = !self.contact_show;
+            console.log('contact_show',self.contact_show);
+          },
     }
 });
 </script>

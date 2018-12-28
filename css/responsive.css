@@ -489,6 +489,18 @@
 	.cooper_cont{
 		min-height:3.4rem;
 	}
-
+	.list_menu li a p{
+		font-size:0.5rem;
+	}
+	.case_item{
+		height:4rem;
+	}
+	.case_detail .p1{
+		 overflow : hidden;
+	    text-overflow: ellipsis;
+	    display: -webkit-box;
+	    -webkit-line-clamp: 1;
+	    -webkit-box-orient: vertical;
+	}
 }
 
