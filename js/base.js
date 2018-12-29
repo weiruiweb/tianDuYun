@@ -22,7 +22,18 @@ window.base={
             }
         });
     },
-
+   
+    messageAdd:function(param,callback) {
+        var allParams = {
+            url:'Project/Solely/addMessage',
+            type:'post',
+            data:param,
+            sCallback: function(data){
+                callback&&callback(data);
+            }
+        };
+        this.getData(allParams)
+    },
     articleList:function(param,callback) {
         var allParams = {
             url:'Common/Article/get',
@@ -46,19 +57,6 @@ window.base={
         };
         this.getData(allParams)
     },
-    messageAdd:function(param,callback) {
-  
-        var allParams = {
-            url:'Common/Message/add',
-            type:'post',
-            data:param,
-            sCallback: function(data){
-                callback&&callback(data);
-            }
-        };
-        this.getData(allParams)
-    },
-
     findKeyFromArray:function(Array,key,value) {  
         var new_array = []; 
         for (var i = 0; i < Array.length; i++) {

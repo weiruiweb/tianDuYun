@@ -100,15 +100,19 @@
                 <p style="color:#fff">partner</p>
             </div>
             <div class="cooper_cont">
-                <div class="left_click" @click="cooper_click(8,cooperData.child[0].mainImg,'minus')">
+                <div class="left_click hidden-xs"  @click="cooper_click(8,cooperData.child[0].mainImg,'minus')">
                     <img src="images/left.png"/>
                 </div>
                 <div class="cooper_center" >
-                    <div class="cooper_item" v-for="item in web_cooperData">
-                        <img :src="item.url">
-                    </div>
+                    <transition-group  name="fade">
+                        <div class="cooper_item" v-for="item in web_cooperData" :key="item.name">
+                            
+                                <img :src="item.url">
+                            
+                        </div>
+                    </transition-group >
                 </div>
-                <div   @click="cooper_click(8,cooperData.child[0].mainImg,'add')" class="left_click" style="text-align:center;">
+                <div  class="left_click hidden-xs"  @click="cooper_click(8,cooperData.child[0].mainImg,'add')" style="text-align:center;">
                     <img src="images/right.png"/>
                 </div>
             </div>
@@ -120,8 +124,10 @@
                 <img src="images/consult.png"/>
             </a>
             <div class="contact_cont1" :class="contact_show?'contact_show':'contact_hide'">
-                <p class="color3">联系电话:{{contactData.contactPhone}}</p>
-                <p class="color3">Email:{{contactData.description}}</p>
+                <p class="color3">联系电话:</p>
+                <p>{{contactData.contactPhone}}</p>
+                <p>Email:</p>
+                <p class="color3">{{contactData.description}}</p>
             </div>
         </div>
     </div>
@@ -135,6 +141,15 @@
     html,body{margin:0;padding:0;}
     .iw_poi_title {color:#333;font-size:14px;font-weight:bold;overflow:hidden;padding-right:13px;white-space:nowrap}
     .iw_poi_content {font:12px arial,sans-serif;overflow:visible;padding-top:4px;white-space:-moz-pre-wrap;word-wrap:break-word}
+
+    .fade-enter-active{
+      transition: opacity .5s;
+    }
+    .fade-enter /* .fade-leave-active below version 2.1.8 */ {
+      opacity: 0 ;
+    }
+
+
 </style>
 <script type="text/javascript" src="http://api.map.baidu.com/api?key=&v=1.1&services=true"></script>
 
@@ -228,7 +243,7 @@
 
 
 <script src="js/rem.js"></script>
-<script type="text/javascript">
+<script type="text/babel">
 var app = new Vue({
     el: '#app',
     data: function() {
@@ -323,30 +338,9 @@ var app = new Vue({
                         if(self.menu.length>0){
                             for(var i=0;i<self.menu.length;i++){
                                 if(self.menu[i].title=='首页内容'){
-                                    console.log(999,self.menu[i].child);
-                                    if(self.menu[i].child){
-                                        var child_length = self.menu[i].child.length;
-                                        if(child_length>0){
-                                            for(var j=0;j<child_length;j++){
-                                                if(self.menu[i].child[j].title =='关于天度云'){
-                                                    self.aboutData = self.menu[i].child[j]
-                                                }
-                                            };
-                                            for(var j=0;j<child_length;j++){
-                                                if(self.menu[i].child[j].title =='服务范围'){
-                                                    self.serviceData = self.menu[i].child[j]
-                                                }
-                                            }
-                                            for(var h=0;h<child_length;h++){
-                                                if(self.menu[i].child[h].title =='合作伙伴'){
-                                                    self.cooperData = self.menu[i].child[h];
-                                                    self.cooper_click(8,self.cooperData.child[0].mainImg);
-                                                }
-                                            }
-
-                                        }
-                                    }
-                                    
+                                    self.serviceData = self.menu[i].child[1];
+                                    self.aboutData = self.menu[i].child[0];
+                                    self.cooperData = self.menu[i].child[2]
                                 }
                             }
                             

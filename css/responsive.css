@@ -212,6 +212,10 @@
 	
 }
 @media (max-width: 480px) {
+	.cooper_center{
+		width:100%;
+		height:3.2rem;
+	}
 	.case_left img{
 		height:1.6rem;
 	}
