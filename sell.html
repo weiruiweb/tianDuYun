@@ -172,19 +172,28 @@ var app = new Vue({
                 tableName:'label',
                 middleKey:'id',
                 key:'parentid',
-                condition:'in'
+                condition:'in',
+                searchItem:{
+                    status:1,
+                }
               },
               labelChildZero:{
                 tableName:'label',
                 middleKey:['labelChild',0,'id'],
                 key:'parentid',
-                condition:'in'
+                condition:'in',
+                searchItem:{
+                  status:1,
+                }
               },
               labelChildOne:{
                 tableName:'label',
                 middleKey:['labelChild',1,'id'],
                 key:'parentid',
-                condition:'in'
+                condition:'in',
+                searchItem:{
+                  status:1,
+                }
               },
             };
             const callback = (res)=>{

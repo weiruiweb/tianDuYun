@@ -167,7 +167,10 @@ var app = new Vue({
                         tableName:'label',
                         middleKey:'id',
                         key:'parentid',
-                        condition:'in'
+                        condition:'in',
+                        searchItem:{
+                            status:1
+                        }
                       },
                   };
             var  callback = function(res){
