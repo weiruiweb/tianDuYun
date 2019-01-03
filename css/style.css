@@ -799,7 +799,7 @@ input,textarea {outline: none; -webkit-box-shadow: none; box-shadow: none;-webki
 }
 .footer{
     width:100%;
-    height:3.1rem;
+    height:3.5rem;
     background: url(../images/footer.jpg) center center no-repeat;
     background-size:cover;
     overflow: hidden;

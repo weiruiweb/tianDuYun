@@ -245,3 +245,7 @@ input,textarea {outline: none; -webkit-box-shadow: none; box-shadow: none;-webki
 .font18{
 	font-size:0.18rem;
 }
+
+.hiddenDiv{
+	display:none;
+}
