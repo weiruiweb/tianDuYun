@@ -34,6 +34,7 @@ window.base={
         };
         this.getData(allParams)
     },
+    
     articleList:function(param,callback) {
         var allParams = {
             url:'Common/Article/get',
