@@ -106,12 +106,10 @@
                 <div class="left_click hidden-xs"  @click="cooper_click(8,cooperData.child[0].mainImg,'minus')">
                     <img src="images/left.png"/>
                 </div>
-                <div class="cooper_center" >
+                <div class="cooper_center">
                     <transition-group  name="fade">
                         <div class="cooper_item" v-for="item in web_cooperData" :key="item.name">
-                            
                                 <img :src="item.url">
-                            
                         </div>
                     </transition-group >
                 </div>
